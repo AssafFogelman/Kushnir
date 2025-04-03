@@ -2,7 +2,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Package, ShoppingCart, Users, DollarSign } from "lucide-react";
 
-const DashboardPage = () => {
+const AdminDashboard = () => {
   const { t, direction } = useLanguage();
 
   // Mock data - replace with API calls later
@@ -61,4 +61,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default AdminDashboard;

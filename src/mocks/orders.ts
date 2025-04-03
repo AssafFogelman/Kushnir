@@ -1,0 +1,96 @@
+import { Order } from "@/types/order";
+
+export const mockOrders: Order[] = [
+  {
+    id: "1",
+    customerName: "דוד כהן",
+    customerPhone: "050-1234567",
+    customerEmail: "david@example.com",
+    items: [
+      {
+        id: "1",
+        name: "ארון ספרים אורן",
+        quantity: 1,
+        price: 1200,
+        image: "/images/products/bookshelf.jpg",
+      },
+    ],
+    totalPrice: 1200,
+    status: "underway",
+    statusChangedAt: "2024-03-20T10:00:00Z",
+    createdAt: "2024-03-19T15:30:00Z",
+    notes: "יש להכין עד סוף החודש",
+    shippingAddress: {
+      street: "הרצל",
+      number: "12",
+      floor: "3",
+      apartment: "5",
+      notes: "יש מעלית",
+    },
+  },
+  {
+    id: "2",
+    customerName: "שרה לוי",
+    customerPhone: "052-7654321",
+    customerEmail: "sarah@example.com",
+    items: [
+      {
+        id: "2",
+        name: "שולחן אוכל אלון",
+        quantity: 1,
+        price: 2500,
+        image: "/images/products/dining-table.jpg",
+      },
+    ],
+    totalPrice: 2500,
+    status: "incoming",
+    statusChangedAt: "2024-03-20T11:00:00Z",
+    createdAt: "2024-03-20T11:00:00Z",
+    notes: "מעוניינת בשולחן בצבע כהה",
+  },
+  {
+    id: "3",
+    customerName: "משה אברהם",
+    customerPhone: "054-9876543",
+    customerEmail: "moshe@example.com",
+    items: [
+      {
+        id: "1",
+        name: "ארון ספרים אורן",
+        quantity: 2,
+        price: 1200,
+        image: "/images/products/bookshelf.jpg",
+      },
+    ],
+    totalPrice: 2400,
+    status: "completed",
+    statusChangedAt: "2024-03-19T16:00:00Z",
+    createdAt: "2024-03-18T09:00:00Z",
+    shippingAddress: {
+      street: "בן יהודה",
+      number: "45",
+      floor: "2",
+      apartment: "3",
+    },
+  },
+  {
+    id: "4",
+    customerName: "רחל גולן",
+    customerPhone: "053-1234567",
+    customerEmail: "rachel@example.com",
+    items: [
+      {
+        id: "2",
+        name: "שולחן אוכל אלון",
+        quantity: 1,
+        price: 2500,
+        image: "/images/products/dining-table.jpg",
+      },
+    ],
+    totalPrice: 2500,
+    status: "cancelled",
+    statusChangedAt: "2024-03-19T14:00:00Z",
+    createdAt: "2024-03-18T10:00:00Z",
+    notes: "הלקוחה ביטלה את ההזמנה",
+  },
+];

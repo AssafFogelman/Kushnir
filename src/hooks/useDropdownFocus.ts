@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { KEYBOARD_KEYS } from "@/lib/accessibility";
 
 export const useDropdownFocus = (isOpen: boolean) => {

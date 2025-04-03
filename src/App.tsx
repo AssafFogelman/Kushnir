@@ -8,13 +8,17 @@ import ShopPage from "@/pages/ShopPage";
 import CartPage from "@/pages/CartPage";
 import CheckoutPage from "@/pages/CheckoutPage";
 import AdminLayout from "@/layouts/AdminLayout";
-import AdminDashboard from "@/pages/admin/Dashboard";
-import AdminProducts from "@/pages/admin/Products";
-import AdminOrders from "@/pages/admin/Orders";
+import AdminProducts from "@/pages/admin/ProductsPage";
 import AdminCoupons from "@/pages/admin/Coupons";
 import NotFoundPage from "@/pages/NotFoundPage";
 import ProductDetailsPage from "./pages/ProductDetailsPage";
 import { CartProvider } from "./contexts/CartContext";
+import AdminDashboard from "./pages/admin/DashboardPage";
+import CarpenterLayout from "./layouts/CarpenterLayout";
+import CarpenterUnderwayOrders from "./pages/carpenter/UnderwayOrders";
+import CarpenterIncomingOrders from "./pages/carpenter/IncomingOrders";
+import CarpenterCompletedOrders from "./pages/carpenter/CompletedOrders";
+import CarpenterCancelledOrders from "./pages/carpenter/CancelledOrders";
 
 const queryClient = new QueryClient();
 
@@ -38,8 +42,21 @@ function App() {
               <Route path="/admin" element={<AdminLayout />}>
                 <Route index element={<AdminDashboard />} />
                 <Route path="products" element={<AdminProducts />} />
-                <Route path="orders" element={<AdminOrders />} />
                 <Route path="coupons" element={<AdminCoupons />} />
+              </Route>
+
+              {/* Carpenter Routes */}
+              <Route path="/carpenter" element={<CarpenterLayout />}>
+                <Route index element={<CarpenterUnderwayOrders />} />
+                <Route path="incoming" element={<CarpenterIncomingOrders />} />
+                <Route
+                  path="completed"
+                  element={<CarpenterCompletedOrders />}
+                />
+                <Route
+                  path="cancelled"
+                  element={<CarpenterCancelledOrders />}
+                />
               </Route>
 
               {/* 404 Route */}

@@ -54,7 +54,7 @@ const mockProducts: Product[] = [
   },
 ];
 
-const ProductsPage = () => {
+const AdminProducts = () => {
   const { t, direction } = useLanguage();
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -263,4 +263,4 @@ const ProductsPage = () => {
   );
 };
 
-export default ProductsPage;
+export default AdminProducts;
