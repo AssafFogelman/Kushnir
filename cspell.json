@@ -1,0 +1,10 @@
+{
+  "language": "en,he",
+  "dictionaries": ["hebrew"],
+  "dictionaryDefinitions": [
+    {
+      "name": "hebrew",
+      "path": "./node_modules/cspell-dict-he/cspell-ext.json"
+    }
+  ]
+}

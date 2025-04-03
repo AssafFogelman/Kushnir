@@ -1,0 +1,6 @@
+.wood-pattern {
+  background-image: url("/images/wood-texture.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
