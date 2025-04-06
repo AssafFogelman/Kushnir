@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useLanguage } from "@/contexts/LanguageContext";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useState } from 'react';
+import { useLanguage } from '@/hooks/useLanguage';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Table,
   TableBody,
@@ -9,64 +9,89 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from '@/components/ui/table';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2 } from "lucide-react";
+} from '@/components/ui/dialog';
+import { Plus, Pencil, Trash2 } from 'lucide-react';
 
 interface Product {
   id: string;
   name: string;
   price: number;
-  image: string;
+  images: string[];
   category: string;
   dimensions?: string;
   material?: string;
   description?: string;
+  shipmentFee: number;
+  estimatedCompletionTime: number;
+  shipmentTime?: number;
+  inStock: boolean;
+  isHidden: boolean;
+  defaultValues?: {
+    completionTime: number;
+    shippingTime: number;
+    shippingFee: number;
+  };
 }
 
 // Mock data - replace with API call later
 const mockProducts: Product[] = [
   {
-    id: "1",
-    name: "ארון ספרים אורן",
+    id: '1',
+    name: 'ארון ספרים אורן',
     price: 1200,
-    image: "/images/products/bookshelf.jpg",
-    category: "furniture",
-    dimensions: "180x40x200 ס״מ",
-    material: "אורן",
-    description: "ארון ספרים מעוצב מעץ אורן איכותי",
+    images: ['/images/products/bookshelf.jpg'],
+    category: 'furniture',
+    dimensions: '180x40x200 ס״מ',
+    material: 'אורן',
+    description: 'ארון ספרים מעוצב מעץ אורן איכותי',
+    shipmentFee: 0,
+    estimatedCompletionTime: 7,
+    shipmentTime: 3,
+    inStock: true,
+    isHidden: false,
   },
   {
-    id: "2",
-    name: "שולחן אוכל אלון",
+    id: '2',
+    name: 'שולחן אוכל אלון',
     price: 2500,
-    image: "/images/products/dining-table.jpg",
-    category: "furniture",
-    dimensions: "160x90x75 ס״מ",
-    material: "אלון",
-    description: "שולחן אוכל מסורתי מעץ אלון",
+    images: ['/images/products/dining-table.jpg'],
+    category: 'furniture',
+    dimensions: '160x90x75 ס״מ',
+    material: 'אלון',
+    description: 'שולחן אוכל מסורתי מעץ אלון',
+    shipmentFee: 0,
+    estimatedCompletionTime: 7,
+    shipmentTime: 3,
+    inStock: true,
+    isHidden: false,
   },
 ];
 
 const AdminProducts = () => {
-  const { t, direction } = useLanguage();
+  const { t } = useLanguage();
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<Partial<Product>>({
-    name: "",
+    name: '',
     price: 0,
-    image: "",
-    category: "furniture",
-    dimensions: "",
-    material: "",
-    description: "",
+    images: [''],
+    category: 'furniture',
+    dimensions: '',
+    material: '',
+    description: '',
+    shipmentFee: 0,
+    estimatedCompletionTime: 7,
+    shipmentTime: 3,
+    inStock: true,
+    isHidden: false,
   });
 
   const handleEdit = (product: Product) => {
@@ -76,17 +101,13 @@ const AdminProducts = () => {
   };
 
   const handleDelete = (productId: string) => {
-    setProducts(products.filter((p) => p.id !== productId));
+    setProducts(products.filter(p => p.id !== productId));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingProduct) {
-      setProducts(
-        products.map((p) =>
-          p.id === editingProduct.id ? { ...p, ...formData } : p
-        )
-      );
+      setProducts(products.map(p => (p.id === editingProduct.id ? { ...p, ...formData } : p)));
     } else {
       setProducts([
         ...products,
@@ -99,54 +120,51 @@ const AdminProducts = () => {
     setIsDialogOpen(false);
     setEditingProduct(null);
     setFormData({
-      name: "",
+      name: '',
       price: 0,
-      image: "",
-      category: "furniture",
-      dimensions: "",
-      material: "",
-      description: "",
+      images: [''],
+      category: 'furniture',
+      dimensions: '',
+      material: '',
+      description: '',
+      shipmentFee: 0,
+      estimatedCompletionTime: 7,
+      shipmentTime: 3,
+      inStock: true,
+      isHidden: false,
     });
   };
 
   return (
     <div>
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">{t("products")}</h1>
+      <div className='flex justify-between items-center mb-6'>
+        <h1 className='text-2xl font-bold'>{t('products')}</h1>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              {t("addProduct")}
+              <Plus className='w-4 h-4 mr-2' />
+              {t('addProduct')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>
-                {editingProduct ? t("editProduct") : t("addProduct")}
-              </DialogTitle>
+              <DialogTitle>{editingProduct ? t('editProduct') : t('addProduct')}</DialogTitle>
             </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className='space-y-4'>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("name")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('name')}</label>
                 <Input
                   value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
+                  onChange={e => setFormData({ ...formData, name: e.target.value })}
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("price")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('price')}</label>
                 <Input
-                  type="number"
+                  type='number'
                   value={formData.price}
-                  onChange={(e) =>
+                  onChange={e =>
                     setFormData({
                       ...formData,
                       price: parseFloat(e.target.value),
@@ -156,64 +174,106 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("image")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('images')}</label>
                 <Input
-                  value={formData.image}
-                  onChange={(e) =>
-                    setFormData({ ...formData, image: e.target.value })
+                  value={formData.images?.[0] || ''}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      images: [e.target.value],
+                    })
                   }
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("category")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('category')}</label>
                 <Input
                   value={formData.category}
-                  onChange={(e) =>
-                    setFormData({ ...formData, category: e.target.value })
-                  }
+                  onChange={e => setFormData({ ...formData, category: e.target.value })}
                   required
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("dimensions")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('dimensions')}</label>
                 <Input
                   value={formData.dimensions}
-                  onChange={(e) =>
-                    setFormData({ ...formData, dimensions: e.target.value })
-                  }
+                  onChange={e => setFormData({ ...formData, dimensions: e.target.value })}
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("material")}
-                </label>
+                <label className='block text-sm font-medium mb-1'>{t('material')}</label>
                 <Input
                   value={formData.material}
-                  onChange={(e) =>
-                    setFormData({ ...formData, material: e.target.value })
+                  onChange={e => setFormData({ ...formData, material: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>{t('description')}</label>
+                <Input
+                  value={formData.description}
+                  onChange={e => setFormData({ ...formData, description: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>{t('shipmentFee')}</label>
+                <Input
+                  type='number'
+                  value={formData.shipmentFee}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      shipmentFee: parseFloat(e.target.value),
+                    })
                   }
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
-                  {t("description")}
+                <label className='block text-sm font-medium mb-1'>
+                  {t('estimatedCompletionTime')}
                 </label>
                 <Input
-                  value={formData.description}
-                  onChange={(e) =>
-                    setFormData({ ...formData, description: e.target.value })
+                  type='number'
+                  value={formData.estimatedCompletionTime}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      estimatedCompletionTime: parseInt(e.target.value),
+                    })
                   }
                 />
               </div>
-              <Button type="submit" className="w-full">
-                {editingProduct ? t("update") : t("add")}
+              <div>
+                <label className='block text-sm font-medium mb-1'>{t('shipmentTime')}</label>
+                <Input
+                  type='number'
+                  value={formData.shipmentTime}
+                  onChange={e =>
+                    setFormData({
+                      ...formData,
+                      shipmentTime: parseInt(e.target.value),
+                    })
+                  }
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>{t('inStock')}</label>
+                <Input
+                  type='checkbox'
+                  checked={formData.inStock}
+                  onChange={e => setFormData({ ...formData, inStock: e.target.checked })}
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>{t('isHidden')}</label>
+                <Input
+                  type='checkbox'
+                  checked={formData.isHidden}
+                  onChange={e => setFormData({ ...formData, isHidden: e.target.checked })}
+                />
+              </div>
+              <Button type='submit' className='w-full'>
+                {editingProduct ? t('update') : t('add')}
               </Button>
             </form>
           </DialogContent>
@@ -223,35 +283,27 @@ const AdminProducts = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t("name")}</TableHead>
-            <TableHead>{t("price")}</TableHead>
-            <TableHead>{t("category")}</TableHead>
-            <TableHead>{t("actions")}</TableHead>
+            <TableHead>{t('name')}</TableHead>
+            <TableHead>{t('price')}</TableHead>
+            <TableHead>{t('category')}</TableHead>
+            <TableHead>{t('actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {products.map((product) => (
+          {products.map(product => (
             <TableRow key={product.id}>
               <TableCell>{product.name}</TableCell>
               <TableCell>
-                {product.price} {t("shekel")}
+                {product.price} {t('shekel')}
               </TableCell>
               <TableCell>{product.category}</TableCell>
               <TableCell>
-                <div className="flex gap-2">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleEdit(product)}
-                  >
-                    <Pencil className="w-4 h-4" />
+                <div className='flex gap-2'>
+                  <Button variant='outline' size='icon' onClick={() => handleEdit(product)}>
+                    <Pencil className='w-4 h-4' />
                   </Button>
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    onClick={() => handleDelete(product.id)}
-                  >
-                    <Trash2 className="w-4 h-4" />
+                  <Button variant='outline' size='icon' onClick={() => handleDelete(product.id)}>
+                    <Trash2 className='w-4 h-4' />
                   </Button>
                 </div>
               </TableCell>

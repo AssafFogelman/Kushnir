@@ -1,0 +1,141 @@
+.sash {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  transform: rotate(45deg) translate(50%, -50%);
+  transform-origin: 0 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.sash-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 200px;
+  padding: 4px 0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  transform: rotate(-45deg) translate(30%, 30%);
+  transform-origin: 0 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+}
+
+.sash-red {
+  background-color: #ef4444;
+  color: white;
+}
+
+.sash-green {
+  background-color: #22c55e;
+  color: white;
+}
+
+.sash-yellow {
+  background-color: #eab308;
+  color: white;
+}
+
+/* Alternative sash style that might be more visible */
+.sash-alt {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.sash-alt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background-color: #ef4444;
+  transform: rotate(45deg) translate(50%, -50%);
+  transform-origin: 0 0;
+}
+
+.sash-alt-content {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  transform: rotate(45deg);
+  color: white;
+  font-weight: bold;
+  font-size: 0.9rem;
+  text-align: center;
+  width: 120px;
+  z-index: 11;
+}
+
+.sash-alt-red::before {
+  background-color: #ef4444;
+}
+
+.sash-alt-green::before {
+  background-color: #22c55e;
+}
+
+.sash-alt-yellow::before {
+  background-color: #eab308;
+}
+
+/* Improved sash style with better proportions */
+.sash-improved {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  overflow: hidden;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.sash-improved::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 120px;
+  height: 120px;
+  background-color: #ef4444;
+  transform: rotate(45deg) translate(50%, -50%);
+  transform-origin: 0 0;
+}
+
+.sash-improved-content {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  transform: rotate(45deg);
+  color: white;
+  font-weight: bold;
+  font-size: 0.85rem;
+  text-align: center;
+  width: 100px;
+  z-index: 11;
+  line-height: 1.2;
+}
+
+.sash-improved-red::before {
+  background-color: #ef4444;
+}
+
+.sash-improved-green::before {
+  background-color: #22c55e;
+}
+
+.sash-improved-yellow::before {
+  background-color: #eab308;
+}

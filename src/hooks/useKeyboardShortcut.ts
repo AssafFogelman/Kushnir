@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect } from 'react';
 
 type KeyCombo = string[];
 type Callback = () => void;
@@ -23,7 +22,7 @@ export const useKeyboardShortcut = ({
     const handleKeyDown = (e: KeyboardEvent) => {
       pressedKeys.add(e.key);
 
-      if (keys.every((key) => pressedKeys.has(key))) {
+      if (keys.every(key => pressedKeys.has(key))) {
         e.preventDefault();
         callback();
       }
@@ -37,14 +36,14 @@ export const useKeyboardShortcut = ({
       pressedKeys.clear();
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
-    window.addEventListener("blur", handleBlur);
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    window.addEventListener('blur', handleBlur);
 
     return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
-      window.removeEventListener("blur", handleBlur);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+      window.removeEventListener('blur', handleBlur);
     };
   }, [keys, callback, enabled]);
 };

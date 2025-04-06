@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useComboboxFocus = () => {
   const comboboxRef = useRef<HTMLDivElement>(null);
@@ -7,7 +7,7 @@ export const useComboboxFocus = () => {
   const listboxRef = useRef<HTMLUListElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number>(-1);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
 
   useEffect(() => {
     if (!isOpen || !comboboxRef.current) return;
@@ -15,9 +15,7 @@ export const useComboboxFocus = () => {
     const combobox = comboboxRef.current;
     const input = inputRef.current;
     const listbox = listboxRef.current;
-    const options = Array.from(
-      listbox?.querySelectorAll('[role="option"]') || []
-    ) as HTMLElement[];
+    const options = Array.from(listbox?.querySelectorAll('[role="option"]') || []) as HTMLElement[];
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -65,27 +63,27 @@ export const useComboboxFocus = () => {
       }
     };
 
-    input?.addEventListener("keydown", handleKeyDown);
-    input?.addEventListener("change", handleInputChange);
-    document.addEventListener("click", handleClickOutside);
+    input?.addEventListener('keydown', handleKeyDown);
+    input?.addEventListener('change', handleInputChange);
+    document.addEventListener('click', handleClickOutside);
 
     // Update ARIA attributes
-    combobox.setAttribute("role", "combobox");
-    combobox.setAttribute("aria-expanded", isOpen.toString());
-    combobox.setAttribute("aria-haspopup", "listbox");
-    input?.setAttribute("aria-autocomplete", "list");
-    input?.setAttribute("aria-controls", "combobox-listbox");
-    listbox?.setAttribute("id", "combobox-listbox");
-    listbox?.setAttribute("role", "listbox");
+    combobox.setAttribute('role', 'combobox');
+    combobox.setAttribute('aria-expanded', isOpen.toString());
+    combobox.setAttribute('aria-haspopup', 'listbox');
+    input?.setAttribute('aria-autocomplete', 'list');
+    input?.setAttribute('aria-controls', 'combobox-listbox');
+    listbox?.setAttribute('id', 'combobox-listbox');
+    listbox?.setAttribute('role', 'listbox');
 
     options.forEach((option, index) => {
-      option.setAttribute("aria-selected", (index === activeIndex).toString());
+      option.setAttribute('aria-selected', (index === activeIndex).toString());
     });
 
     return () => {
-      input?.removeEventListener("keydown", handleKeyDown);
-      input?.removeEventListener("change", handleInputChange);
-      document.removeEventListener("click", handleClickOutside);
+      input?.removeEventListener('keydown', handleKeyDown);
+      input?.removeEventListener('change', handleInputChange);
+      document.removeEventListener('click', handleClickOutside);
     };
   }, [isOpen, activeIndex]);
 

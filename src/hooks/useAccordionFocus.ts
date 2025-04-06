@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useAccordionFocus = () => {
   const accordionRef = useRef<HTMLDivElement>(null);
@@ -9,9 +9,7 @@ export const useAccordionFocus = () => {
     if (!accordionRef.current) return;
 
     const accordion = accordionRef.current;
-    const headers = Array.from(
-      accordion.querySelectorAll('[role="button"]')
-    ) as HTMLElement[];
+    const headers = Array.from(accordion.querySelectorAll('[role="button"]')) as HTMLElement[];
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const currentIndex = headers.indexOf(e.target as HTMLElement);
@@ -53,20 +51,20 @@ export const useAccordionFocus = () => {
       }
     };
 
-    headers.forEach((header) => {
-      header.addEventListener("keydown", handleKeyDown);
+    headers.forEach(header => {
+      header.addEventListener('keydown', handleKeyDown);
     });
 
     // Update ARIA attributes
     headers.forEach((header, index) => {
       const isExpanded = expandedItems.has(index);
-      header.setAttribute("aria-expanded", isExpanded.toString());
-      header.setAttribute("aria-controls", `accordion-panel-${index}`);
+      header.setAttribute('aria-expanded', isExpanded.toString());
+      header.setAttribute('aria-controls', `accordion-panel-${index}`);
     });
 
     return () => {
-      headers.forEach((header) => {
-        header.removeEventListener("keydown", handleKeyDown);
+      headers.forEach(header => {
+        header.removeEventListener('keydown', handleKeyDown);
       });
     };
   }, [expandedItems]);

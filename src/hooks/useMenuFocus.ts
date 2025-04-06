@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useMenuFocus = (isOpen: boolean) => {
   const menuRef = useRef<HTMLDivElement>(null);
@@ -10,19 +10,17 @@ export const useMenuFocus = (isOpen: boolean) => {
     if (!isOpen || !menuRef.current) return;
 
     const menu = menuRef.current;
-    const items = Array.from(
-      menu.querySelectorAll('[role="menuitem"]')
-    ) as HTMLElement[];
+    const items = Array.from(menu.querySelectorAll('[role="menuitem"]')) as HTMLElement[];
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case KEYBOARD_KEYS.ARROW_DOWN:
           e.preventDefault();
-          setActiveIndex((prev) => (prev < items.length - 1 ? prev + 1 : 0));
+          setActiveIndex(prev => (prev < items.length - 1 ? prev + 1 : 0));
           break;
         case KEYBOARD_KEYS.ARROW_UP:
           e.preventDefault();
-          setActiveIndex((prev) => (prev > 0 ? prev - 1 : items.length - 1));
+          setActiveIndex(prev => (prev > 0 ? prev - 1 : items.length - 1));
           break;
         case KEYBOARD_KEYS.ENTER:
         case KEYBOARD_KEYS.SPACE:
@@ -46,9 +44,7 @@ export const useMenuFocus = (isOpen: boolean) => {
         default:
           // Handle type-ahead
           const key = e.key.toLowerCase();
-          const index = items.findIndex((item) =>
-            item.textContent?.toLowerCase().startsWith(key)
-          );
+          const index = items.findIndex(item => item.textContent?.toLowerCase().startsWith(key));
           if (index !== -1) {
             setActiveIndex(index);
           }
@@ -56,10 +52,10 @@ export const useMenuFocus = (isOpen: boolean) => {
       }
     };
 
-    menu.addEventListener("keydown", handleKeyDown);
+    menu.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      menu.removeEventListener("keydown", handleKeyDown);
+      menu.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, activeIndex]);
 

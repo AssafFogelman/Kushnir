@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 export const useFocusRestore = (isOpen: boolean) => {
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);

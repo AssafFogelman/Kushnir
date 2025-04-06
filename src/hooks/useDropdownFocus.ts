@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useDropdownFocus = (isOpen: boolean) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -9,19 +9,17 @@ export const useDropdownFocus = (isOpen: boolean) => {
     if (!isOpen || !dropdownRef.current) return;
 
     const dropdown = dropdownRef.current;
-    const items = Array.from(
-      dropdown.querySelectorAll('[role="option"]')
-    ) as HTMLElement[];
+    const items = Array.from(dropdown.querySelectorAll('[role="option"]')) as HTMLElement[];
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
         case KEYBOARD_KEYS.ARROW_DOWN:
           e.preventDefault();
-          setActiveIndex((prev) => (prev < items.length - 1 ? prev + 1 : prev));
+          setActiveIndex(prev => (prev < items.length - 1 ? prev + 1 : prev));
           break;
         case KEYBOARD_KEYS.ARROW_UP:
           e.preventDefault();
-          setActiveIndex((prev) => (prev > 0 ? prev - 1 : prev));
+          setActiveIndex(prev => (prev > 0 ? prev - 1 : prev));
           break;
         case KEYBOARD_KEYS.ENTER:
         case KEYBOARD_KEYS.SPACE:
@@ -39,10 +37,10 @@ export const useDropdownFocus = (isOpen: boolean) => {
       }
     };
 
-    dropdown.addEventListener("keydown", handleKeyDown);
+    dropdown.addEventListener('keydown', handleKeyDown);
 
     return () => {
-      dropdown.removeEventListener("keydown", handleKeyDown);
+      dropdown.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen, activeIndex]);
 

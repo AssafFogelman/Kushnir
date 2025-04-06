@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useModalFocus = (isOpen: boolean) => {
   const modalRef = useRef<HTMLDivElement>(null);
@@ -13,9 +13,7 @@ export const useModalFocus = (isOpen: boolean) => {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === KEYBOARD_KEYS.ESCAPE) {
@@ -40,11 +38,11 @@ export const useModalFocus = (isOpen: boolean) => {
     };
 
     lastFocusedElementRef.current = document.activeElement as HTMLElement;
-    modal.addEventListener("keydown", handleKeyDown);
+    modal.addEventListener('keydown', handleKeyDown);
     firstFocusableElement?.focus();
 
     return () => {
-      modal.removeEventListener("keydown", handleKeyDown);
+      modal.removeEventListener('keydown', handleKeyDown);
       lastFocusedElementRef.current?.focus();
     };
   }, [isOpen]);

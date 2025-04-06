@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useTooltipFocus = () => {
   const tooltipRef = useRef<HTMLDivElement>(null);
@@ -29,12 +29,12 @@ export const useTooltipFocus = () => {
       }
     };
 
-    tooltip.addEventListener("keydown", handleKeyDown);
-    tooltip.addEventListener("focusout", handleFocusOut);
+    tooltip.addEventListener('keydown', handleKeyDown);
+    tooltip.addEventListener('focusout', handleFocusOut);
 
     return () => {
-      tooltip.removeEventListener("keydown", handleKeyDown);
-      tooltip.removeEventListener("focusout", handleFocusOut);
+      tooltip.removeEventListener('keydown', handleKeyDown);
+      tooltip.removeEventListener('focusout', handleFocusOut);
     };
   }, [isVisible]);
 

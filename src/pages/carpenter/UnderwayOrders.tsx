@@ -1,16 +1,14 @@
-import { useState } from "react";
-import { OrderStatus } from "@/types/order";
-import BaseOrderScreen from "./BaseOrderScreen";
-import { mockOrders } from "@/mocks/orders";
+import { useState } from 'react';
+import { OrderStatus } from '@/types/order';
+import BaseOrderScreen from './BaseOrderScreen';
+import { mockOrders } from '@/mocks/orders';
 
 const CarpenterUnderwayOrders = () => {
-  const [orders, setOrders] = useState(
-    mockOrders.filter((order) => order.status === "underway")
-  );
+  const [orders, setOrders] = useState(mockOrders.filter(order => order.status === 'underway'));
 
   const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
-    setOrders((currentOrders) =>
-      currentOrders.map((order) =>
+    setOrders(currentOrders =>
+      currentOrders.map(order =>
         order.id === orderId
           ? {
               ...order,
@@ -25,8 +23,8 @@ const CarpenterUnderwayOrders = () => {
   return (
     <BaseOrderScreen
       orders={orders}
-      title="הזמנות בתהליך"
-      availableStatuses={["completed", "cancelled"]}
+      title='הזמנות בתהליך'
+      availableStatuses={['completed', 'cancelled']}
       onStatusChange={handleStatusChange}
     />
   );

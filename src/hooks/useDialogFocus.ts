@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useDialogFocus = (isOpen: boolean) => {
   const dialogRef = useRef<HTMLDivElement>(null);
   const lastFocusedElementRef = useRef<HTMLElement | null>(null);
-  const [titleId, setTitleId] = useState<string>("");
+  const [titleId, setTitleId] = useState<string>('');
 
   useEffect(() => {
     if (!isOpen || !dialogRef.current) return;
@@ -14,9 +14,7 @@ export const useDialogFocus = (isOpen: boolean) => {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -43,20 +41,20 @@ export const useDialogFocus = (isOpen: boolean) => {
     };
 
     lastFocusedElementRef.current = document.activeElement as HTMLElement;
-    dialog.addEventListener("keydown", handleKeyDown);
+    dialog.addEventListener('keydown', handleKeyDown);
     firstFocusableElement?.focus();
 
     // Set ARIA attributes
-    dialog.setAttribute("role", "dialog");
-    dialog.setAttribute("aria-modal", "true");
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
     if (titleId) {
-      dialog.setAttribute("aria-labelledby", titleId);
+      dialog.setAttribute('aria-labelledby', titleId);
     }
 
     return () => {
-      dialog.removeEventListener("keydown", handleKeyDown);
+      dialog.removeEventListener('keydown', handleKeyDown);
       lastFocusedElementRef.current?.focus();
-      dialog.removeAttribute("aria-labelledby");
+      dialog.removeAttribute('aria-labelledby');
     };
   }, [isOpen, titleId]);
 

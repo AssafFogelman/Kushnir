@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 interface UseSliderFocusProps {
   min: number;
@@ -78,22 +78,22 @@ export const useSliderFocus = ({
     };
 
     // Set ARIA attributes
-    slider.setAttribute("role", "slider");
-    slider.setAttribute("aria-valuemin", min.toString());
-    slider.setAttribute("aria-valuemax", max.toString());
-    slider.setAttribute("aria-valuenow", value.toString());
-    slider.setAttribute("aria-valuetext", value.toString());
+    slider.setAttribute('role', 'slider');
+    slider.setAttribute('aria-valuemin', min.toString());
+    slider.setAttribute('aria-valuemax', max.toString());
+    slider.setAttribute('aria-valuenow', value.toString());
+    slider.setAttribute('aria-valuetext', value.toString());
 
-    thumb?.addEventListener("keydown", handleKeyDown);
-    slider.addEventListener("mousedown", handleMouseDown);
-    document.addEventListener("mousemove", handleMouseMove);
-    document.addEventListener("mouseup", handleMouseUp);
+    thumb?.addEventListener('keydown', handleKeyDown);
+    slider.addEventListener('mousedown', handleMouseDown);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      thumb?.removeEventListener("keydown", handleKeyDown);
-      slider.removeEventListener("mousedown", handleMouseDown);
-      document.removeEventListener("mousemove", handleMouseMove);
-      document.removeEventListener("mouseup", handleMouseUp);
+      thumb?.removeEventListener('keydown', handleKeyDown);
+      slider.removeEventListener('mousedown', handleMouseDown);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [min, max, step, value, isDragging, onChange]);
 

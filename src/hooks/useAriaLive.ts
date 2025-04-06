@@ -1,25 +1,22 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
-type AriaLivePoliteness = "off" | "polite" | "assertive";
+type AriaLivePoliteness = 'off' | 'polite' | 'assertive';
 
 interface UseAriaLiveOptions {
   politeness?: AriaLivePoliteness;
   message?: string;
 }
 
-export const useAriaLive = ({
-  politeness = "polite",
-  message = "",
-}: UseAriaLiveOptions = {}) => {
+export const useAriaLive = ({ politeness = 'polite', message = '' }: UseAriaLiveOptions = {}) => {
   const liveRegionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!liveRegionRef.current) return;
 
     const liveRegion = liveRegionRef.current;
-    liveRegion.setAttribute("aria-live", politeness);
-    liveRegion.setAttribute("role", "status");
-    liveRegion.setAttribute("aria-atomic", "true");
+    liveRegion.setAttribute('aria-live', politeness);
+    liveRegion.setAttribute('role', 'status');
+    liveRegion.setAttribute('aria-atomic', 'true');
 
     if (message) {
       liveRegion.textContent = message;

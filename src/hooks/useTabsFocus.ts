@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useTabsFocus = (initialIndex = 0) => {
   const tabsRef = useRef<HTMLDivElement>(null);
@@ -10,29 +10,26 @@ export const useTabsFocus = (initialIndex = 0) => {
 
     const tabs = tabsRef.current;
     const tabList = tabs.querySelector('[role="tablist"]');
-    const tabItems = Array.from(
-      tabs.querySelectorAll('[role="tab"]')
-    ) as HTMLElement[];
-    const tabPanels = Array.from(
-      tabs.querySelectorAll('[role="tabpanel"]')
-    ) as HTMLElement[];
+    const tabItems = Array.from(tabs.querySelectorAll('[role="tab"]')) as HTMLElement[];
+    const tabPanels = Array.from(tabs.querySelectorAll('[role="tabpanel"]')) as HTMLElement[];
 
-    const handleKeyDown = (e: KeyboardEvent) => {
-      switch (e.key) {
+    const handleKeyDown = (e: Event) => {
+      const keyboardEvent = e as KeyboardEvent;
+      switch (keyboardEvent.key) {
         case KEYBOARD_KEYS.ARROW_LEFT:
-          e.preventDefault();
-          setActiveIndex((prev) => (prev > 0 ? prev - 1 : tabItems.length - 1));
+          keyboardEvent.preventDefault();
+          setActiveIndex(prev => (prev > 0 ? prev - 1 : tabItems.length - 1));
           break;
         case KEYBOARD_KEYS.ARROW_RIGHT:
-          e.preventDefault();
-          setActiveIndex((prev) => (prev < tabItems.length - 1 ? prev + 1 : 0));
+          keyboardEvent.preventDefault();
+          setActiveIndex(prev => (prev < tabItems.length - 1 ? prev + 1 : 0));
           break;
         case KEYBOARD_KEYS.HOME:
-          e.preventDefault();
+          keyboardEvent.preventDefault();
           setActiveIndex(0);
           break;
         case KEYBOARD_KEYS.END:
-          e.preventDefault();
+          keyboardEvent.preventDefault();
           setActiveIndex(tabItems.length - 1);
           break;
         default:
@@ -40,25 +37,25 @@ export const useTabsFocus = (initialIndex = 0) => {
       }
     };
 
-    tabList?.addEventListener("keydown", handleKeyDown);
+    tabList?.addEventListener('keydown', handleKeyDown);
 
     // Update ARIA attributes
     tabItems.forEach((tab, index) => {
-      tab.setAttribute("aria-selected", (index === activeIndex).toString());
-      tab.setAttribute("tabindex", index === activeIndex ? "0" : "-1");
+      tab.setAttribute('aria-selected', (index === activeIndex).toString());
+      tab.setAttribute('tabindex', index === activeIndex ? '0' : '-1');
     });
 
     tabPanels.forEach((panel, index) => {
-      panel.setAttribute("aria-hidden", (index !== activeIndex).toString());
+      panel.setAttribute('aria-hidden', (index !== activeIndex).toString());
       if (index === activeIndex) {
-        panel.removeAttribute("hidden");
+        panel.removeAttribute('hidden');
       } else {
-        panel.setAttribute("hidden", "");
+        panel.setAttribute('hidden', '');
       }
     });
 
     return () => {
-      tabList?.removeEventListener("keydown", handleKeyDown);
+      tabList?.removeEventListener('keydown', handleKeyDown);
     };
   }, [activeIndex]);
 

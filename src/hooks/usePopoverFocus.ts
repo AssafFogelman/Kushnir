@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef, useState } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const usePopoverFocus = () => {
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -15,9 +15,7 @@ export const usePopoverFocus = () => {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       switch (e.key) {
@@ -53,13 +51,13 @@ export const usePopoverFocus = () => {
       }
     };
 
-    popover.addEventListener("keydown", handleKeyDown);
-    popover.addEventListener("focusout", handleFocusOut);
+    popover.addEventListener('keydown', handleKeyDown);
+    popover.addEventListener('focusout', handleFocusOut);
     firstFocusableElement?.focus();
 
     return () => {
-      popover.removeEventListener("keydown", handleKeyDown);
-      popover.removeEventListener("focusout", handleFocusOut);
+      popover.removeEventListener('keydown', handleKeyDown);
+      popover.removeEventListener('focusout', handleFocusOut);
     };
   }, [isOpen]);
 

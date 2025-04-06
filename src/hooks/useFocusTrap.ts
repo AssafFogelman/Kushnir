@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import { KEYBOARD_KEYS } from "@/lib/accessibility";
+import { useEffect, useRef } from 'react';
+import { KEYBOARD_KEYS } from '@/lib/accessibility';
 
 export const useFocusTrap = (isOpen: boolean) => {
   const containerRef = useRef<HTMLElement>(null);
@@ -12,9 +12,7 @@ export const useFocusTrap = (isOpen: boolean) => {
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
     const firstFocusableElement = focusableElements[0] as HTMLElement;
-    const lastFocusableElement = focusableElements[
-      focusableElements.length - 1
-    ] as HTMLElement;
+    const lastFocusableElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key !== KEYBOARD_KEYS.TAB) return;
@@ -32,11 +30,11 @@ export const useFocusTrap = (isOpen: boolean) => {
       }
     };
 
-    container.addEventListener("keydown", handleKeyDown);
+    container.addEventListener('keydown', handleKeyDown);
     firstFocusableElement?.focus();
 
     return () => {
-      container.removeEventListener("keydown", handleKeyDown);
+      container.removeEventListener('keydown', handleKeyDown);
     };
   }, [isOpen]);
 
