@@ -73,15 +73,15 @@ const ReportsPage = () => {
   return (
     <div className='space-y-6'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold'>{t('reports')}</h1>
+        <h1 className='text-2xl font-bold'>{t('adminDashboard.manageReports')}</h1>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className='w-[180px]'>
-            <SelectValue placeholder={t('selectTimeRange')} />
+            <SelectValue placeholder={t('adminDashboard.thisMonth')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='week'>{t('lastWeek')}</SelectItem>
-            <SelectItem value='month'>{t('lastMonth')}</SelectItem>
-            <SelectItem value='year'>{t('lastYear')}</SelectItem>
+            <SelectItem value='week'>{t('adminDashboard.thisMonth')}</SelectItem>
+            <SelectItem value='month'>{t('adminDashboard.thisMonth')}</SelectItem>
+            <SelectItem value='year'>{t('adminDashboard.thisMonth')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -89,18 +89,21 @@ const ReportsPage = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
         <Card>
           <CardHeader>
-            <CardTitle>{t('totalSales')}</CardTitle>
-            <CardDescription>{t('totalSalesDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.totalRevenue')}</CardTitle>
+            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
-            <p className='text-2xl font-bold'>₪{salesData[0]?.totalSales.toLocaleString()}</p>
+            <p className='text-2xl font-bold'>
+              {t('products.shekel')}
+              {salesData[0]?.totalSales.toLocaleString()}
+            </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('numberOfOrders')}</CardTitle>
-            <CardDescription>{t('numberOfOrdersDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.totalOrders')}</CardTitle>
+            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>{salesData[0]?.numberOfOrders}</p>
@@ -109,20 +112,21 @@ const ReportsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('averageOrderValue')}</CardTitle>
-            <CardDescription>{t('averageOrderValueDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.totalOrders')}</CardTitle>
+            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>
-              ₪{salesData[0]?.averageOrderValue.toLocaleString()}
+              {t('products.shekel')}
+              {salesData[0]?.averageOrderValue.toLocaleString()}
             </p>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('totalCustomers')}</CardTitle>
-            <CardDescription>{t('totalCustomersDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.totalCustomers')}</CardTitle>
+            <CardDescription>{t('adminDashboard.registeredUsers')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>{customerStats.totalCustomers}</p>
@@ -132,21 +136,21 @@ const ReportsPage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('customerStatistics')}</CardTitle>
-          <CardDescription>{t('customerStatisticsDescription')}</CardDescription>
+          <CardTitle>{t('adminDashboard.totalCustomers')}</CardTitle>
+          <CardDescription>{t('adminDashboard.registeredUsers')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             <div>
-              <p className='text-sm text-gray-500'>{t('newCustomers')}</p>
+              <p className='text-sm text-gray-500'>{t('adminDashboard.registeredUsers')}</p>
               <p className='text-xl font-bold'>{customerStats.newCustomers}</p>
             </div>
             <div>
-              <p className='text-sm text-gray-500'>{t('returningCustomers')}</p>
+              <p className='text-sm text-gray-500'>{t('adminDashboard.registeredUsers')}</p>
               <p className='text-xl font-bold'>{customerStats.returningCustomers}</p>
             </div>
             <div>
-              <p className='text-sm text-gray-500'>{t('averageOrderFrequency')}</p>
+              <p className='text-sm text-gray-500'>{t('adminDashboard.totalOrders')}</p>
               <p className='text-xl font-bold'>{customerStats.averageOrderFrequency}</p>
             </div>
           </div>
@@ -155,16 +159,16 @@ const ReportsPage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('popularItems')}</CardTitle>
-          <CardDescription>{t('popularItemsDescription')}</CardDescription>
+          <CardTitle>{t('products.bestSellers')}</CardTitle>
+          <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('itemName')}</TableHead>
-                <TableHead>{t('totalSold')}</TableHead>
-                <TableHead>{t('revenue')}</TableHead>
+                <TableHead>{t('products.name')}</TableHead>
+                <TableHead>{t('products.quantity')}</TableHead>
+                <TableHead>{t('adminDashboard.totalRevenue')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -172,7 +176,10 @@ const ReportsPage = () => {
                 <TableRow key={item.id}>
                   <TableCell>{item.name}</TableCell>
                   <TableCell>{item.totalSold}</TableCell>
-                  <TableCell>₪{item.revenue.toLocaleString()}</TableCell>
+                  <TableCell>
+                    {t('products.shekel')}
+                    {item.revenue.toLocaleString()}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>

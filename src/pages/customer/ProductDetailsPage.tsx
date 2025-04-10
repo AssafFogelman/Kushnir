@@ -25,13 +25,15 @@ const ProductDetailsPage = () => {
     );
   }
 
+  const priceWithTax = product.price * (1 + taxRate / 100);
+
   const handleAddToCart = () => {
     addItem({
       id: product.id,
       name: product.name.he,
-      price: product.price,
+      price: priceWithTax,
       image: product.images[0],
-      quantity: 1,
+      quantity,
     });
     navigate('/cart');
   };
@@ -44,9 +46,14 @@ const ProductDetailsPage = () => {
         </div>
         <div>
           <h1 className='text-3xl font-bold'>{product.name.he}</h1>
-          <p className='text-2xl font-medium'>
-            {product.price} {t('products.shekel')}
-          </p>
+          <div className='space-y-2'>
+            <p className='text-2xl font-medium'>
+              {priceWithTax.toFixed(2)} {t('products.shekel')}
+            </p>
+            <p className='text-sm text-muted-foreground'>
+              {t('products.priceIncludesTax')} ({taxRate}%)
+            </p>
+          </div>
           {product.description && <p className='text-muted-foreground'>{product.description.he}</p>}
           {product.dimensions && (
             <div>
@@ -60,7 +67,7 @@ const ProductDetailsPage = () => {
               <p>{product.material.he}</p>
             </div>
           )}
-          <div className='flex items-center gap-4'>
+          <div className='flex items-center gap-4 mt-4'>
             <Input
               type='number'
               min='1'

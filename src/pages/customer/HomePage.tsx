@@ -7,12 +7,20 @@ import { mockProducts, Product } from '@/mocks/mock-data';
 import { useState, useEffect } from 'react';
 import { Language } from '@/i18n/locales/types';
 
+const MAX_LINES_IN_SECTION = 2;
+const INITIAL_LINES_IN_SECTION = 1;
+
 const HomePage = () => {
   const { t, direction, language } = useLanguage();
   const [specialOffers, setSpecialOffers] = useState<Product[]>([]);
   const [newItems, setNewItems] = useState<Product[]>([]);
   const [limitedOffers, setLimitedOffers] = useState<Product[]>([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [visibleLines, setVisibleLines] = useState({
+    specialOffers: INITIAL_LINES_IN_SECTION,
+    newItems: INITIAL_LINES_IN_SECTION,
+    limitedOffers: INITIAL_LINES_IN_SECTION,
+  });
 
   // Update current time every second
   useEffect(() => {
@@ -57,6 +65,91 @@ const HomePage = () => {
     }
   };
 
+  const showMoreItems = (category: 'specialOffers' | 'newItems' | 'limitedOffers') => {
+    setVisibleLines(prev => ({
+      ...prev,
+      [category]: prev[category] + 1,
+    }));
+  };
+
+  const CategorySection = ({
+    title,
+    items,
+    category,
+    type,
+  }: {
+    title: string;
+    items: Product[];
+    category: 'specialOffers' | 'newItems' | 'limitedOffers';
+    type: string;
+  }) => {
+    const visibleCount = visibleLines[category] * 2; // 2 items per line
+    const hasMoreItems = items.length > visibleCount;
+
+    return (
+      <div className='bg-background rounded-lg shadow-lg overflow-hidden'>
+        <div className={`bg-${type}-500 text-white p-4 text-center`}>
+          <h2 className='text-xl font-bold'>{title}</h2>
+        </div>
+        <div className='p-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+            {items.slice(0, visibleCount).map(product => (
+              <Link key={product.id} to={`/product/${product.id}`} className='block'>
+                <div className='bg-white rounded-md shadow-sm overflow-hidden hover:shadow-md transition-shadow'>
+                  <div className='aspect-[4/3] overflow-hidden'>
+                    <img
+                      src={product.images[0]}
+                      alt={product.name[language as Language]}
+                      className='w-full h-full object-cover'
+                    />
+                  </div>
+                  <div className='p-3'>
+                    <h3 className='text-lg font-semibold mb-1 h-[3.5em] line-clamp-2'>
+                      {product.name[language as Language]}
+                    </h3>
+                    <p className='text-lg font-bold text-primary'>{product.price} ₪</p>
+                    {product.limitedOffer && (
+                      <div className='mt-2 text-sm text-muted-foreground bg-yellow-50 p-2 rounded'>
+                        <p className='font-medium'>{t('home.timeLeft')}:</p>
+                        <p>
+                          {(() => {
+                            const timeLeft = formatTimeLeft(product.limitedOffer.expiryDate);
+                            return (
+                              <>
+                                {formatTimeUnit(timeLeft.days, 'days')}{' '}
+                                {formatTimeUnit(timeLeft.hours, 'hours')}{' '}
+                                {formatTimeUnit(timeLeft.minutes, 'minutes')}{' '}
+                                {formatTimeUnit(timeLeft.seconds, 'seconds')}
+                              </>
+                            );
+                          })()}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          {hasMoreItems && visibleLines[category] < MAX_LINES_IN_SECTION && (
+            <div className='mt-4 flex justify-center'>
+              <Button variant='outline' onClick={() => showMoreItems(category)} className='mr-2'>
+                {t('home.seeMore')}
+              </Button>
+            </div>
+          )}
+          {hasMoreItems && visibleLines[category] >= MAX_LINES_IN_SECTION && (
+            <div className='mt-4 flex justify-center'>
+              <Button asChild>
+                <Link to={`/shop?category=${category}`}>{t('home.viewCategory')}</Link>
+              </Button>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className='space-y-20 mb-[30px]'>
       {/* Hero Section */}
@@ -74,109 +167,31 @@ const HomePage = () => {
       {/* Categories Section */}
       <section className='container mx-auto px-4'>
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8'>
-          {/* Special Offers Category */}
           {specialOffers.length > 0 && (
-            <div className='bg-background rounded-lg shadow-lg overflow-hidden'>
-              <div className='bg-red-500 text-white p-4 text-center'>
-                <h2 className='text-xl font-bold'>{t('home.specialOffers')}</h2>
-              </div>
-              <div className='p-4'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  {specialOffers.map(product => (
-                    <div key={product.id} className='bg-white rounded-md shadow-sm overflow-hidden'>
-                      <div className='aspect-[4/3] overflow-hidden'>
-                        <img
-                          src={product.images[0]}
-                          alt={product.name[language as Language]}
-                          className='w-full h-full object-cover'
-                        />
-                      </div>
-                      <div className='p-3'>
-                        <h3 className='text-lg font-semibold mb-1'>
-                          {product.name[language as Language]}
-                        </h3>
-                        <p className='text-lg font-bold text-primary'>{product.price} ₪</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <CategorySection
+              title={t('home.specialOffers')}
+              items={specialOffers}
+              category='specialOffers'
+              type='red'
+            />
           )}
 
-          {/* New Items Category */}
           {newItems.length > 0 && (
-            <div className='bg-background rounded-lg shadow-lg overflow-hidden'>
-              <div className='bg-green-500 text-white p-4 text-center'>
-                <h2 className='text-xl font-bold'>{t('home.newItems')}</h2>
-              </div>
-              <div className='p-4'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  {newItems.map(product => (
-                    <div key={product.id} className='bg-white rounded-md shadow-sm overflow-hidden'>
-                      <div className='aspect-[4/3] overflow-hidden'>
-                        <img
-                          src={product.images[0]}
-                          alt={product.name[language as Language]}
-                          className='w-full h-full object-cover'
-                        />
-                      </div>
-                      <div className='p-3'>
-                        <h3 className='text-lg font-semibold mb-1'>
-                          {product.name[language as Language]}
-                        </h3>
-                        <p className='text-lg font-bold text-primary'>{product.price} ₪</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <CategorySection
+              title={t('home.newItems')}
+              items={newItems}
+              category='newItems'
+              type='green'
+            />
           )}
 
-          {/* Limited Offers Category */}
           {limitedOffers.length > 0 && (
-            <div className='bg-background rounded-lg shadow-lg overflow-hidden'>
-              <div className='bg-yellow-500 text-white p-4 text-center'>
-                <h2 className='text-xl font-bold'>{t('home.limitedOffers')}</h2>
-              </div>
-              <div className='p-4'>
-                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-                  {limitedOffers.map(product => {
-                    const timeLeft = formatTimeLeft(product.limitedOffer!.expiryDate);
-                    return (
-                      <div
-                        key={product.id}
-                        className='bg-white rounded-md shadow-sm overflow-hidden'
-                      >
-                        <div className='aspect-[4/3] overflow-hidden'>
-                          <img
-                            src={product.images[0]}
-                            alt={product.name[language as Language]}
-                            className='w-full h-full object-cover'
-                          />
-                        </div>
-                        <div className='p-3'>
-                          <h3 className='text-lg font-semibold mb-1'>
-                            {product.name[language as Language]}
-                          </h3>
-                          <p className='text-lg font-bold text-primary'>{product.price} ₪</p>
-                          <div className='mt-2 text-sm text-muted-foreground bg-yellow-50 p-2 rounded'>
-                            <p className='font-medium'>{t('home.timeLeft')}:</p>
-                            <p>
-                              {formatTimeUnit(timeLeft.days, 'days')}{' '}
-                              {formatTimeUnit(timeLeft.hours, 'hours')}{' '}
-                              {formatTimeUnit(timeLeft.minutes, 'minutes')}{' '}
-                              {formatTimeUnit(timeLeft.seconds, 'seconds')}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+            <CategorySection
+              title={t('home.limitedOffers')}
+              items={limitedOffers}
+              category='limitedOffers'
+              type='yellow'
+            />
           )}
         </div>
       </section>

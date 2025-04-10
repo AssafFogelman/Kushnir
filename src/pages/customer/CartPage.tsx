@@ -3,6 +3,7 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import emptyCart from '@/assets/empty-cart.svg';
 
 const CartPage = () => {
   const { t } = useLanguage();
@@ -20,6 +21,11 @@ const CartPage = () => {
     return (
       <div className='container mx-auto px-4 py-8 text-center'>
         <h2 className='text-2xl font-bold mb-4'>{t('cart.yourCart')}</h2>
+        <img
+          src={emptyCart}
+          alt={t('cart.emptyCart')}
+          className='w-48 h-48 mx-auto mb-4 rtl:scale-x-[-1]'
+        />
         <p className='text-lg text-muted-foreground mb-4'>{t('cart.cartEmpty')}</p>
         <Button onClick={() => navigate('/shop')}>{t('cart.continueShopping')}</Button>
       </div>

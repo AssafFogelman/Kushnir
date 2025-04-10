@@ -67,7 +67,10 @@ const Footer = () => {
         </div>
         <div className='mt-8 pt-8 border-t text-center text-sm text-muted-foreground'>
           <p>
-            © {new Date().getFullYear()} Kushnir Carpentry. {t('common.rights')}
+            <Link to='/admin/login' className='hover:text-foreground'>
+              ©
+            </Link>{' '}
+            {new Date().getFullYear()} Kushnir Carpentry. {t('common.rights')}
           </p>
           <div className='mt-2'>
             <Link to='/privacy' className='hover:text-foreground'>

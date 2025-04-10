@@ -17,7 +17,7 @@ const AdminSettings = () => {
     storeName: 'Kushnir',
     currency: 'ILS',
     language: 'he',
-    taxRate: 17,
+    taxRate: 18,
     shippingCost: 0,
     freeShippingThreshold: 1000,
     carpenterPassword: '',
@@ -47,42 +47,42 @@ const AdminSettings = () => {
 
   return (
     <div>
-      <h1 className='text-2xl font-bold mb-8'>{t('settings')}</h1>
+      <h1 className='text-2xl font-bold mb-8'>{t('adminDashboard.manageSettings')}</h1>
       <form onSubmit={handleSubmit} className='space-y-6'>
         <Card>
           <CardHeader>
-            <CardTitle>{t('generalSettings')}</CardTitle>
-            <CardDescription>{t('generalSettingsDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.manageSettings')}</CardTitle>
+            <CardDescription>{t('common.companyDescription')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('storeName')}</label>
+              <label className='block text-sm font-medium mb-1'>{t('common.companyName')}</label>
               <Input name='storeName' value={settings.storeName} onChange={handleInputChange} />
             </div>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('currency')}</label>
+              <label className='block text-sm font-medium mb-1'>{t('products.shekel')}</label>
               <Select
                 value={settings.currency}
                 onValueChange={value => setSettings(prev => ({ ...prev, currency: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t('selectCurrency')} />
+                  <SelectValue placeholder={t('products.shekel')} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='ILS'>₪ (ILS)</SelectItem>
+                  <SelectItem value='ILS'>{t('products.shekel')} (ILS)</SelectItem>
                   <SelectItem value='USD'>$ (USD)</SelectItem>
                   <SelectItem value='EUR'>€ (EUR)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('language')}</label>
+              <label className='block text-sm font-medium mb-1'>{t('common.language')}</label>
               <Select
                 value={settings.language}
                 onValueChange={value => setSettings(prev => ({ ...prev, language: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t('selectLanguage')} />
+                  <SelectValue placeholder={t('common.language')} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value='he'>עברית</SelectItem>
@@ -95,12 +95,12 @@ const AdminSettings = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('taxSettings')}</CardTitle>
-            <CardDescription>{t('taxSettingsDescription')}</CardDescription>
+            <CardTitle>{t('checkout.invoiceDetails')}</CardTitle>
+            <CardDescription>{t('checkout.invoiceDetails')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('taxRate')} (%)</label>
+              <label className='block text-sm font-medium mb-1'>{t('products.discount')} (%)</label>
               <Input
                 type='number'
                 name='taxRate'
@@ -115,13 +115,13 @@ const AdminSettings = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('shippingSettings')}</CardTitle>
-            <CardDescription>{t('shippingSettingsDescription')}</CardDescription>
+            <CardTitle>{t('checkout.shippingMethod')}</CardTitle>
+            <CardDescription>{t('checkout.delivery')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
               <label className='block text-sm font-medium mb-1'>
-                {t('shippingCost')} ({settings.currency})
+                {t('cart.shipping')} ({settings.currency})
               </label>
               <Input
                 type='number'
@@ -133,7 +133,7 @@ const AdminSettings = () => {
             </div>
             <div>
               <label className='block text-sm font-medium mb-1'>
-                {t('freeShippingThreshold')} ({settings.currency})
+                {t('cart.freeShipping')} ({settings.currency})
               </label>
               <Input
                 type='number'
@@ -148,18 +148,20 @@ const AdminSettings = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('carpenterSettings')}</CardTitle>
-            <CardDescription>{t('carpenterSettingsDescription')}</CardDescription>
+            <CardTitle>{t('adminLogin.title')}</CardTitle>
+            <CardDescription>{t('adminLogin.description')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('carpenterPassword')}</label>
+              <label className='block text-sm font-medium mb-1'>
+                {t('adminLogin.enterAdminPassword')}
+              </label>
               <Input
                 type='password'
                 name='carpenterPassword'
                 value={settings.carpenterPassword}
                 onChange={handleInputChange}
-                placeholder={t('enterNewPassword')}
+                placeholder={t('adminLogin.enterAdminPassword')}
               />
             </div>
           </CardContent>
@@ -167,13 +169,13 @@ const AdminSettings = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('defaultValues')}</CardTitle>
-            <CardDescription>{t('defaultValuesDescription')}</CardDescription>
+            <CardTitle>{t('products.estimatedDelivery')}</CardTitle>
+            <CardDescription>{t('products.estimatedDelivery')}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
               <label className='block text-sm font-medium mb-1'>
-                {t('defaultCompletionTime')} ({t('days')})
+                {t('products.estimatedDelivery')} ({t('home.days')})
               </label>
               <Input
                 type='number'
@@ -193,7 +195,7 @@ const AdminSettings = () => {
             </div>
             <div>
               <label className='block text-sm font-medium mb-1'>
-                {t('defaultShippingTime')} ({t('days')})
+                {t('products.estimatedDelivery')} ({t('home.days')})
               </label>
               <Input
                 type='number'
@@ -213,7 +215,7 @@ const AdminSettings = () => {
             </div>
             <div>
               <label className='block text-sm font-medium mb-1'>
-                {t('defaultShippingFee')} ({settings.currency})
+                {t('cart.shipping')} ({settings.currency})
               </label>
               <Input
                 type='number'
@@ -235,7 +237,7 @@ const AdminSettings = () => {
         </Card>
 
         <div className='flex justify-end'>
-          <Button type='submit'>{t('saveChanges')}</Button>
+          <Button type='submit'>{t('checkout.apply')}</Button>
         </div>
       </form>
     </div>

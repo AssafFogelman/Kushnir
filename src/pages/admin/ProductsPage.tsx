@@ -19,10 +19,15 @@ import {
 } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 
+const DEFAULT_FIRST_WEEK_PRICE_PERCENTAGE = Math.random() * 10 + 20; // between 20% and 30%
+
 interface Product {
+  inceptionDate: Date;
   id: string;
   name: string;
-  price: number;
+  initialPrice: number;
+  currentPrice: number;
+  discountPercentage: number;
   images: string[];
   category: string;
   dimensions?: string;
@@ -33,11 +38,11 @@ interface Product {
   shipmentTime?: number;
   inStock: boolean;
   isHidden: boolean;
-  defaultValues?: {
-    completionTime: number;
-    shippingTime: number;
-    shippingFee: number;
-  };
+  // defaultValues?: {
+  //   completionTime: number;
+  //   shippingTime: number;
+  //   shippingFee: number;
+  // };
 }
 
 // Mock data - replace with API call later
@@ -80,8 +85,11 @@ const AdminProducts = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState<Partial<Product>>({
+    inceptionDate: new Date(),
     name: '',
-    price: 0,
+    initialPrice: 0,
+    discountPercentage: 0,
+    currentPrice: 0,
     images: [''],
     category: 'furniture',
     dimensions: '',
@@ -93,6 +101,15 @@ const AdminProducts = () => {
     inStock: true,
     isHidden: false,
   });
+
+  const [yourCostNoVAT, setYourCostNoVAT] = useState(0);
+  const [profitPercentage, setProfitPercentage] = useState(0);
+  const [firstWeekPriceRaisePercentage, setFirstWeekPriceRaisePercentage] = useState(
+    DEFAULT_FIRST_WEEK_PRICE_PERCENTAGE
+  ); //1-100
+  const [discountRate, setDiscountRate] = useState(0); //1-100
+  const [taxRate, setTaxRate] = useState(18);
+  const [customerPrice, setCustomerPrice] = useState(0);
 
   const handleEdit = (product: Product) => {
     setEditingProduct(product);
@@ -121,7 +138,8 @@ const AdminProducts = () => {
     setEditingProduct(null);
     setFormData({
       name: '',
-      price: 0,
+      initialPrice: 0,
+      currentPrice: 0,
       images: [''],
       category: 'furniture',
       dimensions: '',
@@ -135,32 +153,58 @@ const AdminProducts = () => {
     });
   };
 
+  const setInitialPrice = () => {
+    const initialPrice =
+      yourCostNoVAT *
+      (1 + profitPercentage / 100) *
+      (1 + taxRate / 100) *
+      (1 + firstWeekPriceRaisePercentage / 100);
+    return initialPrice;
+  };
+  const calculateDiscountRate = (firstWeekPricePercentage: number) => {
+    if (firstWeekPricePercentage === -1) {
+      return 0;
+    }
+    const discountRate = 1 - 10000 / (1 + firstWeekPricePercentage);
+    return discountRate;
+  };
+
+  const calculateFirstPriceRisePercentage = (discountRate: number) => {
+    if (discountRate === 1) {
+      return 0;
+    }
+    const firstPriceRisePercentage = 10000 / (1 - discountRate);
+    return firstPriceRisePercentage;
+  };
+
   return (
     <div>
       <div className='flex justify-between items-center mb-6'>
-        <h1 className='text-2xl font-bold'>{t('products')}</h1>
+        <h1 className='text-2xl font-bold'>{t('adminProducts.allProducts')}</h1>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className='w-4 h-4 mr-2' />
-              {t('addProduct')}
+              {t('adminProducts.addProduct')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{editingProduct ? t('editProduct') : t('addProduct')}</DialogTitle>
+              <DialogTitle>
+                {editingProduct ? t('adminProducts.editProduct') : t('adminProducts.addProduct')}
+              </DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className='space-y-4'>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('name')}</label>
+                <label className='block text-sm font-medium mb-1'>{t('adminProducts.name')}</label>
                 <Input
                   value={formData.name}
                   onChange={e => setFormData({ ...formData, name: e.target.value })}
                   required
                 />
               </div>
-              <div>
-                <label className='block text-sm font-medium mb-1'>{t('price')}</label>
+              {/* <div>
+                <label className='block text-sm font-medium mb-1'>{t('adminProducts.price')}</label>
                 <Input
                   type='number'
                   value={formData.price}
@@ -172,9 +216,142 @@ const AdminProducts = () => {
                   }
                   required
                 />
+              </div> */}
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.yourCostNoVAT')}
+                </label>
+                <Input
+                  type='number'
+                  value={yourCostNoVAT}
+                  onChange={e => setYourCostNoVAT(parseFloat(e.target.value))}
+                  required
+                />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('images')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.profitPercentage')}
+                </label>
+                <Input
+                  type='number'
+                  value={profitPercentage}
+                  onChange={e => setProfitPercentage(parseFloat(e.target.value))}
+                  required
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.firstWeekPriceRaisePercentage')}
+                </label>
+                <Input
+                  type='number'
+                  value={firstWeekPriceRaisePercentage}
+                  onChange={e => {
+                    const value = parseFloat(e.target.value);
+                    if (value <= 0) {
+                      setFirstWeekPriceRaisePercentage(0);
+                      return;
+                    }
+                    setFirstWeekPriceRaisePercentage(value);
+                    setDiscountRate(calculateDiscountRate(value));
+                  }}
+                  required
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.taxRate')}
+                </label>
+                <Input type='number' value={taxRate} required disabled />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.firstWeekPrice')}
+                </label>
+                <Input
+                  type='number'
+                  value={formData.initialPrice}
+                  onChange={e => {
+                    const value = parseFloat(e.target.value);
+                    if (value <= 0) {
+                      setFormData({
+                        ...formData,
+                        initialPrice: 0,
+                      });
+                      return;
+                    }
+                    setFormData({
+                      ...formData,
+                      initialPrice: value,
+                    });
+                    if (yourCostNoVAT > 0 && profitPercentage > 0 && taxRate > 0) {
+                      if (firstWeekPriceRaisePercentage > 0) {
+                        setDiscountRate(calculateDiscountRate(firstWeekPriceRaisePercentage));
+                        setCustomerPrice(value / (firstWeekPriceRaisePercentage / 100 + 1));
+                        return;
+                      }
+                      if (discountRate > 0) {
+                        setFirstWeekPriceRaisePercentage(
+                          calculateFirstPriceRisePercentage(discountRate)
+                        );
+                        setCustomerPrice(value * (1 - discountRate / 100));
+                        return;
+                      }
+                      if (customerPrice > 0) {
+                        setFirstWeekPriceRaisePercentage(100 * (value / customerPrice - 1));
+                        setDiscountRate(100 * (1 - customerPrice / value));
+                      }
+                    }
+                  }}
+                  required
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.customerPrice')}
+                </label>
+                <Input
+                  type='number'
+                  value={customerPrice}
+                  onChange={e => {
+                    const value = parseFloat(e.target.value);
+                    if (value <= 0) {
+                      setCustomerPrice(0);
+                      return;
+                    }
+                    setCustomerPrice(value);
+                    if (yourCostNoVAT > 0 && profitPercentage > 0 && taxRate > 0) {
+                      if (firstWeekPriceRaisePercentage > 0) {
+                        setDiscountRate(calculateDiscountRate(firstWeekPriceRaisePercentage));
+                        setFormData({
+                          ...formData,
+                          initialPrice: value * (firstWeekPriceRaisePercentage / 100 + 1),
+                        });
+                        return;
+                      }
+                      if (discountRate > 0) {
+                        setFirstWeekPriceRaisePercentage(
+                          calculateFirstPriceRisePercentage(discountRate)
+                        );
+                        setFormData({
+                          ...formData,
+                          initialPrice: value / (1 - discountRate / 100),
+                        });
+                        return;
+                      }
+                      if (formData.initialPrice && formData.initialPrice > 0) {
+                        setFirstWeekPriceRaisePercentage(100 * (formData.initialPrice / value - 1));
+                        setDiscountRate(100 * (1 - value / formData.initialPrice));
+                      }
+                    }
+                  }}
+                  required
+                />
+              </div>
+              <div>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.images')}
+                </label>
                 <Input
                   value={formData.images?.[0] || ''}
                   onChange={e =>
@@ -187,7 +364,9 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('category')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.categories')}
+                </label>
                 <Input
                   value={formData.category}
                   onChange={e => setFormData({ ...formData, category: e.target.value })}
@@ -195,28 +374,36 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('dimensions')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.dimensions')}
+                </label>
                 <Input
                   value={formData.dimensions}
                   onChange={e => setFormData({ ...formData, dimensions: e.target.value })}
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('material')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.material')}
+                </label>
                 <Input
                   value={formData.material}
                   onChange={e => setFormData({ ...formData, material: e.target.value })}
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('description')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.description')}
+                </label>
                 <Input
                   value={formData.description}
                   onChange={e => setFormData({ ...formData, description: e.target.value })}
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('shipmentFee')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.shipping')}
+                </label>
                 <Input
                   type='number'
                   value={formData.shipmentFee}
@@ -230,7 +417,7 @@ const AdminProducts = () => {
               </div>
               <div>
                 <label className='block text-sm font-medium mb-1'>
-                  {t('estimatedCompletionTime')}
+                  {t('adminProducts.estimatedDelivery')}
                 </label>
                 <Input
                   type='number'
@@ -244,7 +431,9 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('shipmentTime')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.estimatedDelivery')}
+                </label>
                 <Input
                   type='number'
                   value={formData.shipmentTime}
@@ -257,7 +446,9 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('inStock')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.inStock')}
+                </label>
                 <Input
                   type='checkbox'
                   checked={formData.inStock}
@@ -265,7 +456,9 @@ const AdminProducts = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('isHidden')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.isHidden')}
+                </label>
                 <Input
                   type='checkbox'
                   checked={formData.isHidden}
@@ -273,7 +466,7 @@ const AdminProducts = () => {
                 />
               </div>
               <Button type='submit' className='w-full'>
-                {editingProduct ? t('update') : t('add')}
+                {editingProduct ? t('adminProducts.update') : t('adminProducts.add')}
               </Button>
             </form>
           </DialogContent>
@@ -283,10 +476,10 @@ const AdminProducts = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('name')}</TableHead>
-            <TableHead>{t('price')}</TableHead>
-            <TableHead>{t('category')}</TableHead>
-            <TableHead>{t('actions')}</TableHead>
+            <TableHead className='text-right'>{t('adminProducts.name')}</TableHead>
+            <TableHead className='text-right'>{t('adminProducts.price')}</TableHead>
+            <TableHead className='text-right'>{t('adminProducts.category')}</TableHead>
+            <TableHead className='text-right'>{t('adminProducts.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

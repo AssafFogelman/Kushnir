@@ -66,21 +66,21 @@ const CouponsPage = () => {
   return (
     <div>
       <div className='flex justify-between items-center mb-6'>
-        <h1 className='text-2xl font-bold'>{t('coupons')}</h1>
+        <h1 className='text-2xl font-bold'>{t('adminDashboard.manageCoupons')}</h1>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button>
               <Plus className='w-4 h-4 mr-2' />
-              {t('addCoupon')}
+              {t('checkout.enterCouponCode')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{t('addCoupon')}</DialogTitle>
+              <DialogTitle>{t('checkout.enterCouponCode')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className='space-y-4'>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('couponCode')}</label>
+                <label className='block text-sm font-medium mb-1'>{t('checkout.couponCode')}</label>
                 <Input
                   value={formData.code}
                   onChange={e => setFormData({ ...formData, code: e.target.value })}
@@ -88,7 +88,9 @@ const CouponsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('discount')} (%)</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('products.discount')} (%)
+                </label>
                 <Input
                   type='number'
                   value={formData.discount}
@@ -104,7 +106,7 @@ const CouponsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('startDate')}</label>
+                <label className='block text-sm font-medium mb-1'>{t('checkout.startDate')}</label>
                 <Input
                   type='date'
                   value={formData.startDate}
@@ -113,7 +115,7 @@ const CouponsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('endDate')}</label>
+                <label className='block text-sm font-medium mb-1'>{t('checkout.endDate')}</label>
                 <Input
                   type='date'
                   value={formData.endDate}
@@ -122,7 +124,7 @@ const CouponsPage = () => {
                 />
               </div>
               <Button type='submit' className='w-full'>
-                {t('add')}
+                {t('checkout.apply')}
               </Button>
             </form>
           </DialogContent>
@@ -132,12 +134,12 @@ const CouponsPage = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('code')}</TableHead>
-            <TableHead>{t('discount')}</TableHead>
-            <TableHead>{t('startDate')}</TableHead>
-            <TableHead>{t('endDate')}</TableHead>
-            <TableHead>{t('status')}</TableHead>
-            <TableHead>{t('actions')}</TableHead>
+            <TableHead>{t('checkout.couponCode')}</TableHead>
+            <TableHead>{t('products.discount')}</TableHead>
+            <TableHead>{t('checkout.startDate')}</TableHead>
+            <TableHead>{t('checkout.endDate')}</TableHead>
+            <TableHead>{t('products.inStock')}</TableHead>
+            <TableHead>{t('products.actions')}</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -147,7 +149,9 @@ const CouponsPage = () => {
               <TableCell>{coupon.discount}%</TableCell>
               <TableCell>{coupon.startDate}</TableCell>
               <TableCell>{coupon.endDate}</TableCell>
-              <TableCell>{coupon.isActive ? t('active') : t('inactive')}</TableCell>
+              <TableCell>
+                {coupon.isActive ? t('products.inStock') : t('products.outOfStock')}
+              </TableCell>
               <TableCell>
                 <Button variant='outline' size='icon' onClick={() => handleDelete(coupon.id)}>
                   <Trash2 className='w-4 h-4' />

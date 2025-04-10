@@ -1,11 +1,13 @@
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Package, Settings, LogOut } from 'lucide-react';
+import { LayoutDashboard, Package, Settings, LogOut, Tag, BarChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const AdminLayout = () => {
   const { t } = useLanguage();
+  const { logout } = useAuth();
   const location = useLocation();
 
   const navItems = [
@@ -20,6 +22,16 @@ const AdminLayout = () => {
       label: t('products'),
     },
     {
+      href: '/admin/coupons',
+      icon: Tag,
+      label: t('coupons'),
+    },
+    {
+      href: '/admin/reports',
+      icon: BarChart,
+      label: t('reports'),
+    },
+    {
       href: '/admin/settings',
       icon: Settings,
       label: t('settings'),
@@ -30,7 +42,7 @@ const AdminLayout = () => {
     <div className='min-h-screen bg-gray-100'>
       <div className='flex'>
         {/* Sidebar */}
-        <div className='w-64 bg-white shadow-lg'>
+        <div className='w-64 bg-white border-r'>
           <div className='p-4'>
             <h1 className='text-xl font-bold'>Kushnir Admin</h1>
           </div>
@@ -55,14 +67,7 @@ const AdminLayout = () => {
             })}
           </nav>
           <div className='mt-auto p-4'>
-            <Button
-              variant='outline'
-              className='w-full'
-              onClick={() => {
-                // TODO: Implement logout
-                console.log('Logout');
-              }}
-            >
+            <Button variant='outline' className='w-full' onClick={logout}>
               <LogOut className='w-5 h-5 mr-2' />
               {t('logout')}
             </Button>

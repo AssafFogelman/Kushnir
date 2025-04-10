@@ -6,5 +6,9 @@ change the apps icon into something appropriate
 
 
 
+productdetails:
+check if the carousel works
+
+thn move to cart.
 
 so we need that when the admin ets a price, it will start higher. then after a week, the price will start to deflate and the old price will be kept.

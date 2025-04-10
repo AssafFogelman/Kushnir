@@ -34,7 +34,11 @@ export const mockProducts: Product[] = [
       he: 'שולחן עץ',
     },
     price: 1200,
-    images: ['/images/products/dining-table/1.jpg'],
+    images: [
+      '/images/products/dining-table/1.jpg',
+      '/images/products/dining-table/2.jpg',
+      '/images/products/dining-table/3.jpg',
+    ],
     categories: ['furniture', 'dining'],
     dimensions: {
       en: '120x80x75 cm',
@@ -57,7 +61,7 @@ export const mockProducts: Product[] = [
       he: 'כיסא עץ',
     },
     price: 350,
-    images: ['/images/products/bookshelf/1.jpg'],
+    images: ['/images/products/wooden-chair/1.jpg', '/images/products/wooden-chair/2.jpg'],
     categories: ['furniture', 'dining'],
     dimensions: {
       en: '45x45x90 cm',
