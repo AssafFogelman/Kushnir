@@ -10,23 +10,27 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { mockProducts, Product } from '@/lib/mock-data';
+import { mockProducts, Product } from '@/mocks/mock-data';
 
 const ShopPage = () => {
   const { t, language } = useLanguage();
   const { addItem } = useCart();
   const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [sortBy, setSortBy] = useState('nameAsc');
 
+  // Get all unique categories from products
+  const allCategories = Array.from(
+    new Set(mockProducts.flatMap(product => product.categories))
+  ).sort();
+
   const categories = [
     { value: 'all', label: t('products.allCategories') },
-    { value: 'boards', label: t('common.boards') },
-    { value: 'beams', label: t('common.beams') },
-    { value: 'furniture', label: t('common.furniture') },
+    ...allCategories.map(category => ({
+      value: category,
+      label: t(`common.${category}`) || category,
+    })),
   ];
 
   const sortOptions = [
@@ -38,16 +42,24 @@ const ShopPage = () => {
 
   useEffect(() => {
     let filteredProducts = [...mockProducts];
+    const searchQuery = searchParams.get('search') || '';
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      filteredProducts = filteredProducts.filter(product => product.category === selectedCategory);
+      filteredProducts = filteredProducts.filter(product =>
+        product.categories.includes(selectedCategory)
+      );
     }
 
     // Filter by search query
     if (searchQuery) {
-      filteredProducts = filteredProducts.filter(product =>
-        product.name[language].toLowerCase().includes(searchQuery.toLowerCase())
+      const query = searchQuery.toLowerCase();
+      filteredProducts = filteredProducts.filter(
+        product =>
+          product.name[language].toLowerCase().includes(query) ||
+          product.categories.some(category => category.toLowerCase().includes(query)) ||
+          product.material?.[language]?.toLowerCase().includes(query) ||
+          product.description?.[language]?.toLowerCase().includes(query)
       );
     }
 
@@ -68,14 +80,14 @@ const ShopPage = () => {
     });
 
     setProducts(filteredProducts);
-  }, [selectedCategory, searchQuery, sortBy, language]);
+  }, [selectedCategory, searchParams, sortBy, language]);
 
   const handleAddToCart = (product: Product) => {
     addItem({
       id: product.id,
       name: product.name[language],
       price: product.price,
-      image: product.image,
+      image: product.images[0],
       quantity: 1,
     });
   };
@@ -83,33 +95,7 @@ const ShopPage = () => {
   return (
     <div className='container mx-auto px-4 py-8'>
       <div className='flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8'>
-        <div className='w-full md:w-64'>
-          <Input
-            type='text'
-            placeholder={t('products.search')}
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
-          />
-        </div>
         <div className='flex gap-4 w-full md:w-auto'>
-          <Select
-            value={selectedCategory}
-            onValueChange={(value: string) => {
-              setSelectedCategory(value);
-              setSearchParams({ category: value });
-            }}
-          >
-            <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder={t('products.filterBy')} />
-            </SelectTrigger>
-            <SelectContent>
-              {categories.map(category => (
-                <SelectItem key={category.value} value={category.value}>
-                  {category.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className='w-[180px]'>
               <SelectValue placeholder={t('products.sortBy')} />
@@ -126,13 +112,15 @@ const ShopPage = () => {
       </div>
 
       {products.length === 0 ? (
-        <div className='text-center py-12'>
-          <p className='text-lg text-muted-foreground'>{t('products.noProducts')}</p>
+        <div className='text-center py-8'>
+          <p className='text-lg text-gray-500'>{t('products.noProducts')}</p>
         </div>
       ) : (
-        <div className='grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8'>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>
           {products.map(product => (
-            <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+            <div key={product.id} className='h-full'>
+              <ProductCard product={product} onAddToCart={handleAddToCart} />
+            </div>
           ))}
         </div>
       )}

@@ -3,3 +3,8 @@ make sure that all the components are with the CVA standard (variations)
 create a color theme for unification of color
 
 change the apps icon into something appropriate
+
+
+
+
+so we need that when the admin ets a price, it will start higher. then after a week, the price will start to deflate and the old price will be kept.

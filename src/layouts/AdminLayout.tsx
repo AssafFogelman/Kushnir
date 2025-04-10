@@ -2,6 +2,7 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import { LayoutDashboard, Package, Settings, LogOut } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const AdminLayout = () => {
   const { t } = useLanguage();
@@ -40,11 +41,12 @@ const AdminLayout = () => {
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`flex items-center gap-2 px-4 py-2 ${
+                  className={cn(
+                    'flex items-center gap-2 px-4 py-2',
                     location.pathname === item.href
                       ? 'bg-gray-100 text-primary'
                       : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  )}
                 >
                   <Icon className='w-5 h-5' />
                   <span>{item.label}</span>

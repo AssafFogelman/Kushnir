@@ -1,7 +1,7 @@
 /* cspell:disable */
 import { useState, ReactNode } from 'react';
 import { Language } from '@/lib/language-types';
-import { translations } from '@/lib/translations/index';
+import { translations } from '@/i18n/locales/index';
 import { LanguageContext } from './LanguageContextDef';
 
 export const LanguageProvider = ({ children }: { children: ReactNode }) => {

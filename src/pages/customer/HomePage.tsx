@@ -3,9 +3,9 @@ import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import '@/styles/wood-pattern.css';
 import '@/styles/sash.css';
-import { mockProducts, Product } from '@/lib/mock-data';
+import { mockProducts, Product } from '@/mocks/mock-data';
 import { useState, useEffect } from 'react';
-import { Language } from '@/lib/translations/types';
+import { Language } from '@/i18n/locales/types';
 
 const HomePage = () => {
   const { t, direction, language } = useLanguage();
@@ -58,7 +58,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className='space-y-20'>
+    <div className='space-y-20 mb-[30px]'>
       {/* Hero Section */}
       <section className='relative h-[50vh] flex items-center justify-center wood-pattern'>
         <div className='absolute inset-0 bg-black/50' />
@@ -86,7 +86,7 @@ const HomePage = () => {
                     <div key={product.id} className='bg-white rounded-md shadow-sm overflow-hidden'>
                       <div className='aspect-[4/3] overflow-hidden'>
                         <img
-                          src={product.image}
+                          src={product.images[0]}
                           alt={product.name[language as Language]}
                           className='w-full h-full object-cover'
                         />
@@ -116,7 +116,7 @@ const HomePage = () => {
                     <div key={product.id} className='bg-white rounded-md shadow-sm overflow-hidden'>
                       <div className='aspect-[4/3] overflow-hidden'>
                         <img
-                          src={product.image}
+                          src={product.images[0]}
                           alt={product.name[language as Language]}
                           className='w-full h-full object-cover'
                         />
@@ -151,7 +151,7 @@ const HomePage = () => {
                       >
                         <div className='aspect-[4/3] overflow-hidden'>
                           <img
-                            src={product.image}
+                            src={product.images[0]}
                             alt={product.name[language as Language]}
                             className='w-full h-full object-cover'
                           />

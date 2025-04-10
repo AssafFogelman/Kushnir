@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
-import { formatPrice } from '@/lib/utils';
+import { formatPrice, cn } from '@/lib/utils';
 import { checkoutSchema } from '@/lib/validations/checkout';
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
@@ -210,30 +210,34 @@ const CheckoutPage = () => {
             <div className='space-y-4'>
               <div>
                 <Label htmlFor='firstName'>{t('checkout.firstName')}</Label>
-                <Input id='firstName' {...register('firstName')} className='text-right' />
+                <Input id='firstName' {...register('firstName')} className={cn('text-right')} />
                 {errors.firstName && (
-                  <p className='text-red-500 text-sm'>{errors.firstName.message}</p>
+                  <p className={cn('text-sm', 'text-red-500')}>{errors.firstName.message}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor='lastName'>{t('checkout.lastName')}</Label>
-                <Input id='lastName' {...register('lastName')} className='text-right' />
+                <Input id='lastName' {...register('lastName')} className={cn('text-right')} />
                 {errors.lastName && (
-                  <p className='text-red-500 text-sm'>{errors.lastName.message}</p>
+                  <p className={cn('text-sm', 'text-red-500')}>{errors.lastName.message}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor='companyName'>{t('checkout.companyName')}</Label>
-                <Input id='companyName' {...register('companyName')} className='text-right' />
+                <Input id='companyName' {...register('companyName')} className={cn('text-right')} />
                 {errors.companyName && (
-                  <p className='text-red-500 text-sm'>{errors.companyName.message}</p>
+                  <p className={cn('text-sm', 'text-red-500')}>{errors.companyName.message}</p>
                 )}
               </div>
               <div>
                 <Label htmlFor='companyNumber'>{t('checkout.companyNumber')}</Label>
-                <Input id='companyNumber' {...register('companyNumber')} className='text-right' />
+                <Input
+                  id='companyNumber'
+                  {...register('companyNumber')}
+                  className={cn('text-right')}
+                />
                 {errors.companyNumber && (
-                  <p className='text-red-500 text-sm'>{errors.companyNumber.message}</p>
+                  <p className={cn('text-sm', 'text-red-500')}>{errors.companyNumber.message}</p>
                 )}
               </div>
             </div>
