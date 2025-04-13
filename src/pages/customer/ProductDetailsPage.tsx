@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Carousel from '@/components/ui/carousel';
 import { mockProducts } from '@/mocks/mock-data';
+import { TranslationKeys } from '@/lib/language-types';
+import { formatPrice } from '@/lib/utils';
 
 const ProductDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -13,6 +15,7 @@ const ProductDetailsPage = () => {
   const { t } = useLanguage();
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const taxRate = 18; // VAT rate in Israel
 
   const product = mockProducts.find(p => p.id === id);
 
@@ -48,10 +51,10 @@ const ProductDetailsPage = () => {
           <h1 className='text-3xl font-bold'>{product.name.he}</h1>
           <div className='space-y-2'>
             <p className='text-2xl font-medium'>
-              {priceWithTax.toFixed(2)} {t('products.shekel')}
-            </p>
-            <p className='text-sm text-muted-foreground'>
-              {t('products.priceIncludesTax')} ({taxRate}%)
+              {formatPrice(priceWithTax)}
+              <span className='text-sm text-gray-500 ml-2'>
+                {t('products.priceIncludesTax' as TranslationKeys)} ({taxRate}%)
+              </span>
             </p>
           </div>
           {product.description && <p className='text-muted-foreground'>{product.description.he}</p>}
@@ -76,7 +79,7 @@ const ProductDetailsPage = () => {
               className='w-20'
             />
             <Button onClick={handleAddToCart} className='flex-1'>
-              {t('products.addToCart')}
+              {t('products.addToCart' as TranslationKeys)}
             </Button>
           </div>
         </div>

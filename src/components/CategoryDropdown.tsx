@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Menu, X } from 'lucide-react';
 import { mockProducts } from '@/mocks/mock-data';
+import { TranslationKeys } from '@/lib/language-types';
 
 interface CategoryDropdownProps {
   mobile?: boolean;
@@ -10,7 +11,7 @@ interface CategoryDropdownProps {
 }
 
 const CategoryDropdown = ({ mobile = false, onSelect }: CategoryDropdownProps) => {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -21,10 +22,10 @@ const CategoryDropdown = ({ mobile = false, onSelect }: CategoryDropdownProps) =
   ).sort();
 
   const categories = [
-    { value: 'all', label: t('products.allCategories') },
+    { value: 'all', label: t('products.allCategories' as TranslationKeys) },
     ...allCategories.map(category => ({
       value: category,
-      label: t(`common.${category}`) || category,
+      label: t(`common.${category}` as TranslationKeys) || category,
     })),
   ];
 
@@ -75,7 +76,7 @@ const CategoryDropdown = ({ mobile = false, onSelect }: CategoryDropdownProps) =
         aria-haspopup='true'
       >
         {isOpen ? <X className='h-5 w-5' /> : <Menu className='h-5 w-5' />}
-        <span>{t('products.categories')}</span>
+        <span>{t('products.categories' as TranslationKeys)}</span>
       </button>
 
       <div

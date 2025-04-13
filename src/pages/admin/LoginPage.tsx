@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+import { TranslationKeys } from '@/lib/language-types';
 
 const LoginPage = () => {
   const { t } = useLanguage();
@@ -13,12 +14,20 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  useEffect(() => {
+    (async () => {
+      handleSubmit();
+    })();
+  }, []);
+
+  const handleSubmit = async (e?: React.FormEvent) => {
+    if (e) {
+      e.preventDefault();
+    }
     try {
       await login(password);
-    } catch (err) {
-      setError(t('adminLogin.invalidPassword'));
+    } catch {
+      setError(t('adminLogin.invalidPassword' as TranslationKeys));
     }
   };
 
@@ -26,8 +35,8 @@ const LoginPage = () => {
     <div className='min-h-screen flex items-center justify-center bg-gray-100'>
       <Card className='w-full max-w-md'>
         <CardHeader>
-          <CardTitle>{t('adminLogin.title')}</CardTitle>
-          <CardDescription>{t('adminLogin.description')}</CardDescription>
+          <CardTitle>{t('adminLogin.title' as TranslationKeys)}</CardTitle>
+          <CardDescription>{t('adminLogin.description' as TranslationKeys)}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className='space-y-4'>
@@ -40,14 +49,14 @@ const LoginPage = () => {
             <div>
               <Input
                 type='password'
-                placeholder={t('adminLogin.enterAdminPassword')}
+                placeholder={t('adminLogin.enterAdminPassword' as TranslationKeys)}
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 required
               />
             </div>
             <Button type='submit' className='w-full'>
-              {t('common.login')}
+              {t('common.login' as TranslationKeys)}
             </Button>
           </form>
         </CardContent>

@@ -6,6 +6,7 @@ import '@/styles/sash.css';
 import { mockProducts, Product } from '@/mocks/mock-data';
 import { useState, useEffect } from 'react';
 import { Language } from '@/i18n/locales/types';
+import { TranslationKeys } from '@/lib/language-types';
 
 const MAX_LINES_IN_SECTION = 2;
 const INITIAL_LINES_IN_SECTION = 1;
@@ -59,9 +60,9 @@ const HomePage = () => {
   // Format time units based on language
   const formatTimeUnit = (value: number, unit: string) => {
     if (language === 'he') {
-      return `${value} ${t(`home.${unit}`)}`;
+      return `${value} ${t(`home.${unit}` as TranslationKeys)}`;
     } else {
-      return `${value}${t(`home.${unit}`)}`;
+      return `${value}${t(`home.${unit}` as TranslationKeys)}`;
     }
   };
 

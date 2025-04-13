@@ -13,6 +13,7 @@ import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
 import { formatPrice, cn } from '@/lib/utils';
 import { checkoutSchema } from '@/lib/validations/checkout';
+import { TranslationKeys } from '@/lib/language-types';
 
 type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
@@ -130,7 +131,9 @@ const CheckoutPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className='space-y-8'>
           {/* Shipping Method */}
           <div className='space-y-4'>
-            <h2 className='text-xl font-semibold text-right'>{t('checkout.shippingMethod')}</h2>
+            <h2 className='text-xl font-semibold text-right'>
+              {t('checkout.shippingMethod' as TranslationKeys)}
+            </h2>
             <RadioGroup
               value={shippingMethod}
               onValueChange={(value: 'pickup' | 'delivery') => setShippingMethod(value)}
@@ -282,7 +285,9 @@ const CheckoutPage = () => {
 
           {/* Payment Methods */}
           <div className='space-y-4'>
-            <h2 className='text-xl font-semibold text-right'>{t('checkout.paymentMethods')}</h2>
+            <h2 className='text-xl font-semibold text-right'>
+              {t('checkout.payWithCreditCard' as TranslationKeys)}
+            </h2>
             <div className='space-y-4'>
               <Button type='submit' className='w-full'>
                 {t('checkout.payWithCreditCard')}

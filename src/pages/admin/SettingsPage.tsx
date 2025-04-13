@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { TranslationKeys } from '@/lib/language-types';
 
 const AdminSettings = () => {
   const { t } = useLanguage();
@@ -47,42 +48,52 @@ const AdminSettings = () => {
 
   return (
     <div>
-      <h1 className='text-2xl font-bold mb-8'>{t('adminDashboard.manageSettings')}</h1>
+      <h1 className='text-2xl font-bold mb-8'>
+        {t('adminDashboard.manageSettings' as TranslationKeys)}
+      </h1>
       <form onSubmit={handleSubmit} className='space-y-6'>
         <Card>
           <CardHeader>
-            <CardTitle>{t('adminDashboard.manageSettings')}</CardTitle>
-            <CardDescription>{t('common.companyDescription')}</CardDescription>
+            <CardTitle>{t('adminDashboard.manageSettings' as TranslationKeys)}</CardTitle>
+            <CardDescription>{t('common.companyDescription' as TranslationKeys)}</CardDescription>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('common.companyName')}</label>
+              <label className='block text-sm font-medium mb-1'>
+                {t('common.companyName' as TranslationKeys)}
+              </label>
               <Input name='storeName' value={settings.storeName} onChange={handleInputChange} />
             </div>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('products.shekel')}</label>
+              <label className='block text-sm font-medium mb-1'>
+                {t('products.shekel' as TranslationKeys)}
+              </label>
               <Select
                 value={settings.currency}
                 onValueChange={value => setSettings(prev => ({ ...prev, currency: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t('products.shekel')} />
+                  <SelectValue placeholder={t('products.shekel' as TranslationKeys)} />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value='ILS'>{t('products.shekel')} (ILS)</SelectItem>
+                  <SelectItem value='ILS'>
+                    {t('products.shekel' as TranslationKeys)} (ILS)
+                  </SelectItem>
                   <SelectItem value='USD'>$ (USD)</SelectItem>
                   <SelectItem value='EUR'>€ (EUR)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className='block text-sm font-medium mb-1'>{t('common.language')}</label>
+              <label className='block text-sm font-medium mb-1'>
+                {t('common.language' as TranslationKeys)}
+              </label>
               <Select
                 value={settings.language}
                 onValueChange={value => setSettings(prev => ({ ...prev, language: value }))}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={t('common.language')} />
+                  <SelectValue placeholder={t('common.language' as TranslationKeys)} />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value='he'>עברית</SelectItem>

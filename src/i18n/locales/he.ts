@@ -1,7 +1,5 @@
-import { Translations } from './types';
-
 // Hebrew translations
-export const heTranslations: Translations = {
+export const he = {
   adminLogin: {
     title: 'כניסת מנהל',
     description: 'הזן את הסיסמה שלך כדי לגשת לפאנל הניהול',
@@ -18,6 +16,8 @@ export const heTranslations: Translations = {
     category: 'קטגוריה',
     price: 'מחיר',
     name: 'שם',
+    englishName: 'שם באנגלית',
+    HebrewName: 'שם בעברית',
     allProducts: 'כל המוצרים',
     estimatedDelivery: 'זמן אספקה משוער',
     inStock: 'במלאי',
@@ -26,10 +26,25 @@ export const heTranslations: Translations = {
     material: 'חומר',
     description: 'תיאור',
     shipping: 'משלוח',
-    yourCostNoVAT: 'העלות שלך ללא מעמ',
+    costNoVAT: 'העלות שלך ללא מעמ',
     profitPercentage: 'אחוז הרווח שאתה רוצה לקבל',
-    firstWeekPriceRaisePercentage: 'אחוז העלאה במחיר בשבוע הראשון',
-    discountRate: 'אחוז הנחה מהשבוע הראשון',
+    initialPrice: 'מחיר ראשוני לשבוע הראשון',
+    saleMethod: 'שיטת מכירה',
+    productCategories: 'קטגוריות מוצר',
+    taxRate: 'שיעור המס',
+    selectCategories: 'בחר קטגוריות',
+    addNewCategory: 'הוסף קטגוריה חדשה',
+    addNewCategoryHebrew: 'הזן את שם הקטגוריה בעברית',
+    addNewCategoryEnglish: 'הזן את שם הקטגוריה באנגלית',
+    dropImageHere: 'שחרר את התמונה כאן',
+    dragAndDropOrClick: 'גרור ושחרר תמונה לכאן, או לחץ לבחירה',
+    onlyJPG: 'רק תמונות בפורמט JPG מתקבלות',
+    width: 'רוחב',
+    height: 'גובה',
+    depth: 'עומק',
+    optional: 'אופציונלי',
+    shipmentFee: 'עלות משלוח',
+    estimatedCompletionTime: 'זמן ייצור משוער',
   },
   adminDashboard: {
     title: 'לוח בקרה',
@@ -70,6 +85,10 @@ export const heTranslations: Translations = {
       'ייצור עבודות עץ איכותיות מאז 1990. המקור המהימן שלך לריהוט עץ מותאם אישית ומוצרי עץ.',
     language: 'שפה',
     login: 'התחברות',
+    logout: 'התנתקות',
+    cm: 'ס"מ',
+    shekel: '₪',
+    days: 'ימים',
   },
   products: {
     allProducts: 'כל המוצרים',
@@ -105,7 +124,7 @@ export const heTranslations: Translations = {
     sale: 'מבצע',
     discount: 'הנחה',
     freeShipping: 'משלוח חינם',
-    estimatedDelivery: 'זמן אספקה משוער',
+    estimatedDelivery: 'זמן משלוח משוער',
     warranty: 'אחריות',
     careInstructions: 'הוראות טיפול',
     assemblyRequired: 'נדרשת הרכבה',
@@ -206,3 +225,6 @@ export const heTranslations: Translations = {
     homeButton: 'חזרה לדף הבית',
   },
 };
+
+export default he;
+export type Translations = typeof he;

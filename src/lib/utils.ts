@@ -11,3 +11,7 @@ export const formatPrice = (price: number): string => {
     currency: 'ILS',
   }).format(price);
 };
+
+export const noRoundNumber = (number: number) => {
+  return number % 100 === 0 ? number - 1 : number;
+};

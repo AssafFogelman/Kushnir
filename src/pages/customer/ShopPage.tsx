@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { useCart } from '@/hooks/useCart';
+import { TranslationKeys } from '@/lib/language-types';
 import ProductCard from '@/components/ProductCard';
 import {
   Select,
@@ -15,29 +16,21 @@ import { mockProducts, Product } from '@/mocks/mock-data';
 const ShopPage = () => {
   const { t, language } = useLanguage();
   const { addItem } = useCart();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, _setSearchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>(mockProducts);
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get('category') || 'all');
+  const [selectedCategory, _setSelectedCategory] = useState(searchParams.get('category') || 'all');
   const [sortBy, setSortBy] = useState('nameAsc');
 
-  // Get all unique categories from products
-  const allCategories = Array.from(
-    new Set(mockProducts.flatMap(product => product.categories))
-  ).sort();
-
-  const categories = [
-    { value: 'all', label: t('products.allCategories') },
-    ...allCategories.map(category => ({
-      value: category,
-      label: t(`common.${category}`) || category,
-    })),
-  ];
+  // // Get all unique categories from products
+  // const allCategories = Array.from(
+  //   new Set(mockProducts.flatMap(product => product.categories))
+  // ).sort();
 
   const sortOptions = [
-    { value: 'nameAsc', label: t('products.nameAsc') },
-    { value: 'nameDesc', label: t('products.nameDesc') },
-    { value: 'priceLowToHigh', label: t('products.priceLowToHigh') },
-    { value: 'priceHighToLow', label: t('products.priceHighToLow') },
+    { value: 'nameAsc', label: t('products.nameAsc' as TranslationKeys) },
+    { value: 'nameDesc', label: t('products.nameDesc' as TranslationKeys) },
+    { value: 'priceLowToHigh', label: t('products.priceLowToHigh' as TranslationKeys) },
+    { value: 'priceHighToLow', label: t('products.priceHighToLow' as TranslationKeys) },
   ];
 
   useEffect(() => {
@@ -98,7 +91,7 @@ const ShopPage = () => {
         <div className='flex gap-4 w-full md:w-auto'>
           <Select value={sortBy} onValueChange={setSortBy}>
             <SelectTrigger className='w-[180px]'>
-              <SelectValue placeholder={t('products.sortBy')} />
+              <SelectValue placeholder={t('products.sortBy' as TranslationKeys)} />
             </SelectTrigger>
             <SelectContent>
               {sortOptions.map(option => (
@@ -113,7 +106,7 @@ const ShopPage = () => {
 
       {products.length === 0 ? (
         <div className='text-center py-8'>
-          <p className='text-lg text-gray-500'>{t('products.noProducts')}</p>
+          <p className='text-lg text-gray-500'>{t('products.noProducts' as TranslationKeys)}</p>
         </div>
       ) : (
         <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6'>

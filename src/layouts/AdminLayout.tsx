@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { LayoutDashboard, Package, Settings, LogOut, Tag, BarChart } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { TranslationKeys } from '@/lib/language-types';
 
 const AdminLayout = () => {
   const { t } = useLanguage();
@@ -14,27 +15,27 @@ const AdminLayout = () => {
     {
       href: '/admin',
       icon: LayoutDashboard,
-      label: t('dashboard'),
+      label: t('adminDashboard.title' as TranslationKeys),
     },
     {
       href: '/admin/products',
       icon: Package,
-      label: t('products'),
+      label: t('adminProducts.allProducts' as TranslationKeys),
     },
     {
       href: '/admin/coupons',
       icon: Tag,
-      label: t('coupons'),
+      label: t('adminDashboard.manageCoupons' as TranslationKeys),
     },
     {
       href: '/admin/reports',
       icon: BarChart,
-      label: t('reports'),
+      label: t('adminDashboard.manageReports' as TranslationKeys),
     },
     {
       href: '/admin/settings',
       icon: Settings,
-      label: t('settings'),
+      label: t('adminDashboard.manageSettings' as TranslationKeys),
     },
   ];
 
@@ -69,7 +70,7 @@ const AdminLayout = () => {
           <div className='mt-auto p-4'>
             <Button variant='outline' className='w-full' onClick={logout}>
               <LogOut className='w-5 h-5 mr-2' />
-              {t('logout')}
+              {t('common.logout' as TranslationKeys)}
             </Button>
           </div>
         </div>

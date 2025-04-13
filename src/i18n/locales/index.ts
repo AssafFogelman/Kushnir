@@ -1,15 +1,15 @@
-import { enTranslations } from './en';
-import { heTranslations } from './he';
+import { en } from './en';
+import { he } from './he';
 import { Language } from './types';
 
 // Combined translations object
 export const translations = {
-  en: enTranslations,
-  he: heTranslations,
+  en: en,
+  he: he,
 };
 
 // Export individual language translations
-export { enTranslations, heTranslations };
+export { en as enTranslations, he as heTranslations };
 
 // Export the Language type
 export type { Language };

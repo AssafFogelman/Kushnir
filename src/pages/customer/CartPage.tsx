@@ -4,6 +4,7 @@ import { useCart } from '@/hooks/useCart';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import emptyCart from '@/assets/empty-cart.svg';
+import { TranslationKeys } from '@/lib/language-types';
 
 const CartPage = () => {
   const { t } = useLanguage();
@@ -23,7 +24,7 @@ const CartPage = () => {
         <h2 className='text-2xl font-bold mb-4'>{t('cart.yourCart')}</h2>
         <img
           src={emptyCart}
-          alt={t('cart.emptyCart')}
+          alt={t('cart.cartEmpty' as TranslationKeys)}
           className='w-48 h-48 mx-auto mb-4 rtl:scale-x-[-1]'
         />
         <p className='text-lg text-muted-foreground mb-4'>{t('cart.cartEmpty')}</p>

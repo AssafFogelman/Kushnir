@@ -18,6 +18,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Plus, Trash2 } from 'lucide-react';
+import { TranslationKeys } from '@/lib/language-types';
 
 interface Coupon {
   id: string;
@@ -106,7 +107,9 @@ const CouponsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('checkout.startDate')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('checkout.startDate' as TranslationKeys)}
+                </label>
                 <Input
                   type='date'
                   value={formData.startDate}
@@ -115,7 +118,9 @@ const CouponsPage = () => {
                 />
               </div>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('checkout.endDate')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('checkout.endDate' as TranslationKeys)}
+                </label>
                 <Input
                   type='date'
                   value={formData.endDate}
@@ -136,8 +141,8 @@ const CouponsPage = () => {
           <TableRow>
             <TableHead>{t('checkout.couponCode')}</TableHead>
             <TableHead>{t('products.discount')}</TableHead>
-            <TableHead>{t('checkout.startDate')}</TableHead>
-            <TableHead>{t('checkout.endDate')}</TableHead>
+            <TableHead>{t('checkout.startDate' as TranslationKeys)}</TableHead>
+            <TableHead>{t('checkout.endDate' as TranslationKeys)}</TableHead>
             <TableHead>{t('products.inStock')}</TableHead>
             <TableHead>{t('products.actions')}</TableHead>
           </TableRow>

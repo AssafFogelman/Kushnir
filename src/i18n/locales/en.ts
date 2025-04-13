@@ -1,7 +1,7 @@
-import { Translations } from './types';
+import { Translations } from './he';
 
 // English translations
-export const enTranslations: Translations = {
+export const en: Translations = {
   adminDashboard: {
     title: 'Admin Dashboard',
     totalProducts: 'Total Products',
@@ -34,6 +34,8 @@ export const enTranslations: Translations = {
     category: 'Category',
     price: 'Price',
     name: 'Name',
+    englishName: 'English Name',
+    HebrewName: 'Hebrew Name',
     allProducts: 'All Products',
     estimatedDelivery: 'Estimated Delivery',
     inStock: 'In Stock',
@@ -42,10 +44,25 @@ export const enTranslations: Translations = {
     material: 'Material',
     description: 'Description',
     shipping: 'Shipping',
-    yourCostNoVAT: 'Your Cost without VAT',
+    costNoVAT: 'Your Cost without VAT',
     profitPercentage: 'Profit Percentage you wish to gain',
-    firstWeekPriceRaisePercentage: "First Week's Price Raise Percentage",
-    discountRate: 'Discount rate from the first week',
+    initialPrice: 'Initial Price',
+    saleMethod: 'Sale Method',
+    productCategories: 'Product Categories',
+    taxRate: 'Tax Rate',
+    selectCategories: 'Select Categories',
+    addNewCategory: 'Add New Category',
+    addNewCategoryHebrew: 'Enter the category name in Hebrew',
+    addNewCategoryEnglish: 'Enter the category name in English',
+    dropImageHere: 'Drop the image here',
+    dragAndDropOrClick: 'Drag and drop an image here, or click to select',
+    onlyJPG: 'Only JPG images are accepted',
+    width: 'Width',
+    height: 'Height',
+    depth: 'Depth',
+    optional: 'Optional',
+    shipmentFee: 'Shipment Fee',
+    estimatedCompletionTime: 'Estimated Completion Time',
   },
   common: {
     home: 'Home',
@@ -70,6 +87,10 @@ export const enTranslations: Translations = {
       'Quality woodworking since 1990. Your trusted source for custom wooden furniture and wood products.',
     language: 'Language',
     login: 'Login',
+    logout: 'Logout',
+    cm: 'cm',
+    shekel: '₪',
+    days: 'days',
   },
   home: {
     heroTitle: 'Custom Wood Furniture',
@@ -105,7 +126,12 @@ export const enTranslations: Translations = {
   },
   products: {
     allProducts: 'All Products',
-
+    addProduct: 'Add Product',
+    editProduct: 'Edit Product',
+    update: 'Update',
+    add: 'Add',
+    isHidden: 'Hidden',
+    actions: 'Actions',
     backToShop: 'Back to Shop',
     productDetails: 'Product Details',
     price: 'Price',
@@ -201,3 +227,5 @@ export const enTranslations: Translations = {
     homeButton: 'Go to Home',
   },
 };
+
+export default en;
