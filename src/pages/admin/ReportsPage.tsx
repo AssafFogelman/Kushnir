@@ -39,7 +39,7 @@ interface PopularItem {
 }
 
 const ReportsPage = () => {
-  const { t } = useLanguage();
+  const { t, direction } = useLanguage();
   const [timeRange, setTimeRange] = useState('month');
 
   // Mock data - replace with API calls
@@ -73,15 +73,17 @@ const ReportsPage = () => {
   return (
     <div className='space-y-6'>
       <div className='flex justify-between items-center'>
-        <h1 className='text-2xl font-bold'>{t('adminDashboard.manageReports')}</h1>
+        <h1 className='text-2xl font-bold'>{t('adminReports.manageReports')}</h1>
         <Select value={timeRange} onValueChange={setTimeRange}>
           <SelectTrigger className='w-[180px]'>
-            <SelectValue placeholder={t('adminDashboard.thisMonth')} />
+            <SelectValue placeholder={t('adminReports.thisMonth')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='week'>{t('adminDashboard.thisMonth')}</SelectItem>
-            <SelectItem value='month'>{t('adminDashboard.thisMonth')}</SelectItem>
-            <SelectItem value='year'>{t('adminDashboard.thisMonth')}</SelectItem>
+            <SelectItem value='today'>{t('adminReports.today')}</SelectItem>
+            <SelectItem value='week'>{t('adminReports.thisWeek')}</SelectItem>
+            <SelectItem value='month'>{t('adminReports.thisMonth')}</SelectItem>
+            <SelectItem value='year'>{t('adminReports.thisYear')}</SelectItem>
+            <SelectItem value='all'>{t('adminReports.allTime')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -89,8 +91,8 @@ const ReportsPage = () => {
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
         <Card>
           <CardHeader>
-            <CardTitle>{t('adminDashboard.totalRevenue')}</CardTitle>
-            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
+            <CardTitle>{t('adminReports.totalRevenue')}</CardTitle>
+            <CardDescription>{t('adminReports.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>
@@ -102,8 +104,8 @@ const ReportsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('adminDashboard.totalOrders')}</CardTitle>
-            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
+            <CardTitle>{t('adminReports.totalOrders')}</CardTitle>
+            <CardDescription>{t('adminReports.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>{salesData[0]?.numberOfOrders}</p>
@@ -112,8 +114,8 @@ const ReportsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('adminDashboard.totalOrders')}</CardTitle>
-            <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
+            <CardTitle>{t('adminReports.totalOrders')}</CardTitle>
+            <CardDescription>{t('adminReports.thisMonth')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>
@@ -125,8 +127,8 @@ const ReportsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{t('adminDashboard.totalCustomers')}</CardTitle>
-            <CardDescription>{t('adminDashboard.registeredUsers')}</CardDescription>
+            <CardTitle>{t('adminReports.totalCustomers')}</CardTitle>
+            <CardDescription>{t('adminReports.registeredUsers')}</CardDescription>
           </CardHeader>
           <CardContent>
             <p className='text-2xl font-bold'>{customerStats.totalCustomers}</p>
@@ -136,21 +138,21 @@ const ReportsPage = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t('adminDashboard.totalCustomers')}</CardTitle>
-          <CardDescription>{t('adminDashboard.registeredUsers')}</CardDescription>
+          <CardTitle>{t('adminReports.totalCustomers')}</CardTitle>
+          <CardDescription>{t('adminReports.registeredUsers')}</CardDescription>
         </CardHeader>
         <CardContent>
           <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
             <div>
-              <p className='text-sm text-gray-500'>{t('adminDashboard.registeredUsers')}</p>
+              <p className='text-sm text-gray-500'>{t('adminReports.registeredUsers')}</p>
               <p className='text-xl font-bold'>{customerStats.newCustomers}</p>
             </div>
             <div>
-              <p className='text-sm text-gray-500'>{t('adminDashboard.registeredUsers')}</p>
+              <p className='text-sm text-gray-500'>{t('adminReports.registeredUsers')}</p>
               <p className='text-xl font-bold'>{customerStats.returningCustomers}</p>
             </div>
             <div>
-              <p className='text-sm text-gray-500'>{t('adminDashboard.totalOrders')}</p>
+              <p className='text-sm text-gray-500'>{t('adminReports.totalOrders')}</p>
               <p className='text-xl font-bold'>{customerStats.averageOrderFrequency}</p>
             </div>
           </div>
@@ -160,15 +162,21 @@ const ReportsPage = () => {
       <Card>
         <CardHeader>
           <CardTitle>{t('products.bestSellers')}</CardTitle>
-          <CardDescription>{t('adminDashboard.thisMonth')}</CardDescription>
+          <CardDescription>{t('adminReports.thisMonth')}</CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>{t('products.name')}</TableHead>
-                <TableHead>{t('products.quantity')}</TableHead>
-                <TableHead>{t('adminDashboard.totalRevenue')}</TableHead>
+                <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+                  {t('products.name')}
+                </TableHead>
+                <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+                  {t('products.quantity')}
+                </TableHead>
+                <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+                  {t('adminReports.totalRevenue')}
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

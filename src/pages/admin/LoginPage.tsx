@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useCallback, useEffect, useState } from 'react';
+import { useAuth } from '@/hooks/useAuth';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,22 +14,30 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    (async () => {
-      handleSubmit();
-    })();
-  }, []);
+  const handleSubmit = useCallback(
+    async (e?: React.FormEvent) => {
+      if (e) {
+        e.preventDefault();
+      }
+      try {
+        await login(password);
+      } catch {
+        setError(t('adminLogin.invalidPassword' as TranslationKeys));
+      }
+    },
+    [login, t, password]
+  );
 
-  const handleSubmit = async (e?: React.FormEvent) => {
-    if (e) {
-      e.preventDefault();
-    }
-    try {
-      await login(password);
-    } catch {
-      setError(t('adminLogin.invalidPassword' as TranslationKeys));
-    }
-  };
+  useEffect(() => {
+    const handleKeyPress = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        handleSubmit();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [handleSubmit]);
 
   return (
     <div className='min-h-screen flex items-center justify-center bg-gray-100'>

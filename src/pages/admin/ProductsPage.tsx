@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Table,
   TableBody,
@@ -19,54 +20,42 @@ import {
 } from '@/components/ui/dialog';
 import { Plus, Pencil, Trash2, Upload } from 'lucide-react';
 import { noRoundNumber } from '@/lib/utils';
-import { TranslationKeys } from '@/lib/language-types';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Combobox } from '@/components/ui/combobox';
 import { Badge } from '@/components/ui/badge';
 import { useDropzone } from 'react-dropzone';
-import { Textarea } from '@/components/ui/textarea';
+import { Product, productCategory } from '@/types/product';
 
-type SaleMethods = 'REGULAR' | 'NEW' | 'LIMITED_OFFER' | 'SPECIAL_OFFER';
-
-interface Product {
-  inceptionDate: Date;
-  id: string;
+const getDefaultProductData = (): Product => ({
+  inceptionDate: new Date(),
+  id: '',
   name: {
-    he: string;
-    en: string;
-  };
-  initialPrice: number;
-  price: number;
-  discountPercentage: number;
-  images: string[];
-  categories: productCategory[];
-  saleMethod: SaleMethods;
-  dimensions?: {
-    width?: number;
-    height?: number;
-    depth?: number;
-  };
-  material?: {
-    he: string;
-    en: string;
-  };
-  description?: {
-    he: string;
-    en: string;
-  };
-  shipmentFee: number;
-  estimatedCompletionTime: number;
-  shipmentTime?: number;
-  inStock: boolean;
-  isHidden: boolean;
-}
-
-interface Category {
-  he: string;
-  en: string;
-}
-
-type productCategory = Category;
+    he: '',
+    en: '',
+  },
+  initialPrice: 0,
+  price: 0,
+  discountPercentage: 0,
+  images: [''],
+  categories: [],
+  dimensions: {
+    width: 0,
+    height: 0,
+    depth: 0,
+  },
+  material: {
+    he: '',
+    en: '',
+  },
+  description: {
+    he: '',
+    en: '',
+  },
+  shipmentFee: 0,
+  estimatedCompletionTime: 7,
+  shipmentTime: 3,
+  inStock: true,
+  isHidden: false,
+  saleMethod: 'REGULAR',
+});
 
 // Mock data - replace with API call later
 const mockProducts: Product[] = [
@@ -146,7 +135,7 @@ const mockProducts: Product[] = [
   },
 ];
 
-const defaultCategories: Category[] = [
+const defaultCategories: productCategory[] = [
   { he: 'ספריות', en: 'Bookshelves' },
   { he: 'שולחנות אוכל', en: 'Dining tables' },
   { he: 'שולחנות', en: 'Tables' },
@@ -159,49 +148,17 @@ const defaultCategories: Category[] = [
 ];
 
 const AdminProducts = () => {
-  const { t } = useLanguage();
+  const { t, direction } = useLanguage();
   const [products, setProducts] = useState<Product[]>(mockProducts);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [availableCategories, setAvailableCategories] =
     useState<productCategory[]>(defaultCategories);
-  const [formData, setFormData] = useState<Product>({
-    inceptionDate: new Date(),
-    id: '',
-    name: {
-      he: '',
-      en: '',
-    },
-    initialPrice: 0,
-    price: 0,
-    discountPercentage: 0,
-    images: [''],
-    categories: [],
-    dimensions: {
-      width: 0,
-      height: 0,
-      depth: 0,
-    },
-    material: {
-      he: '',
-      en: '',
-    },
-    description: {
-      he: '',
-      en: '',
-    },
-    shipmentFee: 0,
-    estimatedCompletionTime: 7,
-    shipmentTime: 3,
-    inStock: true,
-    isHidden: false,
-    saleMethod: 'REGULAR',
-  });
+  const [formData, setFormData] = useState<Product>(getDefaultProductData());
 
   const [costNoVAT, setYourCostNoVAT] = useState(0);
   const [profitPercentage, setProfitPercentage] = useState(0);
   const [taxRate] = useState(18);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const handleEdit = (product: Product) => {
@@ -232,38 +189,7 @@ const AdminProducts = () => {
 
       setIsDialogOpen(false);
       setEditingProduct(null);
-      setFormData({
-        inceptionDate: new Date(),
-        id: '',
-        name: {
-          he: '',
-          en: '',
-        },
-        initialPrice: 0,
-        price: 0,
-        discountPercentage: 0,
-        images: [''],
-        categories: [],
-        dimensions: {
-          width: 0,
-          height: 0,
-          depth: 0,
-        },
-        material: {
-          he: '',
-          en: '',
-        },
-        description: {
-          he: '',
-          en: '',
-        },
-        shipmentFee: 0,
-        estimatedCompletionTime: 7,
-        shipmentTime: 3,
-        inStock: true,
-        isHidden: false,
-        saleMethod: 'REGULAR',
-      });
+      setFormData(getDefaultProductData());
     } catch (error) {
       console.error('Error saving product:', error);
       // You might want to show an error message to the user here
@@ -316,7 +242,7 @@ const AdminProducts = () => {
         reader.readAsDataURL(file);
       });
     },
-    [formData, previewImages.length]
+    [previewImages.length]
   );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -645,10 +571,28 @@ const AdminProducts = () => {
               </div>
               <div className='col-span-2'>
                 <label className='block text-sm font-medium mb-1'>
-                  {t('adminProducts.description')}
+                  {t('adminProducts.hebrewDescription')}
                 </label>
                 <Textarea
                   value={formData.description?.he || ''}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setFormData({
+                      ...formData,
+                      description: {
+                        he: e.target.value,
+                        en: '', // We'll translate this automatically
+                      },
+                    })
+                  }
+                  className='min-h-[6rem]'
+                />
+              </div>
+              <div className='col-span-2'>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminProducts.englishDescription')}
+                </label>
+                <Textarea
+                  value={formData.description?.en || ''}
                   onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setFormData({
                       ...formData,
@@ -728,13 +672,13 @@ const AdminProducts = () => {
                   />
                 </div>
               </div>
-              <div>
+              <div className='col-span-2'>
                 <label className='block text-sm font-medium mb-1'>
                   {t('adminProducts.images')} ({previewImages.length}/10)
                 </label>
                 <div
                   {...getRootProps()}
-                  className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors ${
+                  className={`border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors min-h-[16rem] ${
                     isDragActive
                       ? 'border-primary bg-primary/10'
                       : 'border-gray-300 hover:border-primary'
@@ -779,7 +723,7 @@ const AdminProducts = () => {
                       )}
                     </div>
                   ) : (
-                    <div className='flex flex-col items-center gap-2'>
+                    <div className='flex flex-col items-center gap-2 h-full justify-center'>
                       <Upload className='w-8 h-8 text-muted-foreground' />
                       <p className='text-sm text-muted-foreground'>
                         {isDragActive
@@ -804,20 +748,24 @@ const AdminProducts = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead className='text-right'>
-              {t('adminProducts.name' as TranslationKeys)}
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminProducts.name')}
             </TableHead>
-            <TableHead className='text-right'>
-              {t('adminProducts.price' as TranslationKeys)}
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminProducts.price')}
             </TableHead>
-            <TableHead className='text-right'>
-              {t('adminProducts.initialPrice' as TranslationKeys)}
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminProducts.initialPrice')}
             </TableHead>
-            <TableHead className='text-right'>
-              {t('products.discount' as TranslationKeys)}
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('products.discount')}
             </TableHead>
-            <TableHead className='text-right'>{t('adminProducts.category')}</TableHead>
-            <TableHead className='text-right'>{t('adminProducts.actions')}</TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminProducts.category')}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminProducts.actions')}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -825,9 +773,11 @@ const AdminProducts = () => {
             <TableRow key={product.id}>
               <TableCell>{product.name.he}</TableCell>
               <TableCell>
-                {product.initialPrice} {t('products.shekel' as TranslationKeys)}
+                {product.initialPrice} {t('products.shekel')}
               </TableCell>
-              <TableCell>{product.categories.map((cat: Category) => cat.he).join(', ')}</TableCell>
+              <TableCell>
+                {product.categories.map((cat: productCategory) => cat.he).join(', ')}
+              </TableCell>
               <TableCell>
                 <div className='flex gap-2'>
                   <Button variant='outline' size='icon' onClick={() => handleEdit(product)}>

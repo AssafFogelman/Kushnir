@@ -1,6 +1,53 @@
 .wood-pattern {
+  position: relative;
+  background-color: #8b4513; /* Base wood color */
+  background-image: 
+    /* Wood grain pattern */
+    linear-gradient(90deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+    /* Wood knots and variations */
+      radial-gradient(circle at 30% 30%, rgba(0, 0, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(0, 0, 0, 0.1) 0%, transparent 50%),
+    /* Wood grain lines */
+      repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.1) 0px,
+        rgba(0, 0, 0, 0.1) 2px,
+        transparent 2px,
+        transparent 4px
+      ),
+    /* Wood texture overlay */
+      linear-gradient(
+        to bottom,
+        rgba(139, 69, 19, 0.2) 0%,
+        rgba(139, 69, 19, 0.1) 50%,
+        rgba(139, 69, 19, 0.2) 100%
+      );
+  background-size:
+    20px 20px,
+    20px 20px,
+    100% 100%,
+    100% 100%,
+    8px 8px,
+    100% 100%;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.wood-pattern::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-image: url('/images/wood-texture.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.wood-pattern.loaded::before {
+  opacity: 1;
 }

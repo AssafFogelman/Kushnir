@@ -30,7 +30,7 @@ interface Coupon {
 }
 
 const CouponsPage = () => {
-  const { t } = useLanguage();
+  const { t, direction } = useLanguage();
   const [coupons, setCoupons] = useState<Coupon[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [formData, setFormData] = useState<Partial<Coupon>>({
@@ -72,16 +72,18 @@ const CouponsPage = () => {
           <DialogTrigger asChild>
             <Button>
               <Plus className='w-4 h-4 mr-2' />
-              {t('checkout.enterCouponCode')}
+              {t('adminCoupons.enterCouponCode')}
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent dir='auto' className='text-start max-h-[90vh] flex flex-col'>
             <DialogHeader>
-              <DialogTitle>{t('checkout.enterCouponCode')}</DialogTitle>
+              <DialogTitle className='text-start'>{t('adminCoupons.enterCouponCode')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className='space-y-4'>
               <div>
-                <label className='block text-sm font-medium mb-1'>{t('checkout.couponCode')}</label>
+                <label className='block text-sm font-medium mb-1'>
+                  {t('adminCoupons.couponCode')}
+                </label>
                 <Input
                   value={formData.code}
                   onChange={e => setFormData({ ...formData, code: e.target.value })}
@@ -108,7 +110,7 @@ const CouponsPage = () => {
               </div>
               <div>
                 <label className='block text-sm font-medium mb-1'>
-                  {t('checkout.startDate' as TranslationKeys)}
+                  {t('adminCoupons.startDate' as TranslationKeys)}
                 </label>
                 <Input
                   type='date'
@@ -119,7 +121,7 @@ const CouponsPage = () => {
               </div>
               <div>
                 <label className='block text-sm font-medium mb-1'>
-                  {t('checkout.endDate' as TranslationKeys)}
+                  {t('adminCoupons.endDate' as TranslationKeys)}
                 </label>
                 <Input
                   type='date'
@@ -129,7 +131,7 @@ const CouponsPage = () => {
                 />
               </div>
               <Button type='submit' className='w-full'>
-                {t('checkout.apply')}
+                {t('adminCoupons.apply')}
               </Button>
             </form>
           </DialogContent>
@@ -139,12 +141,24 @@ const CouponsPage = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>{t('checkout.couponCode')}</TableHead>
-            <TableHead>{t('products.discount')}</TableHead>
-            <TableHead>{t('checkout.startDate' as TranslationKeys)}</TableHead>
-            <TableHead>{t('checkout.endDate' as TranslationKeys)}</TableHead>
-            <TableHead>{t('products.inStock')}</TableHead>
-            <TableHead>{t('products.actions')}</TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminCoupons.couponCode')}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('products.discount')}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminCoupons.startDate' as TranslationKeys)}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('adminCoupons.endDate' as TranslationKeys)}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('products.inStock')}
+            </TableHead>
+            <TableHead className={direction === 'rtl' ? 'text-right' : 'text-left'}>
+              {t('products.actions')}
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>

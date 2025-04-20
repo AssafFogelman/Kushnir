@@ -4,26 +4,30 @@ import { Toaster } from '@/components/ui/toaster';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import { Suspense, lazy } from 'react';
 import MainLayout from '@/layouts/MainLayout';
-import HomePage from '@/pages/customer/HomePage';
-import ShopPage from '@/pages/customer/ShopPage';
-import CartPage from '@/pages/customer/CartPage';
-import CheckoutPage from '@/pages/customer/CheckoutPage';
-import AdminLayout from '@/layouts/AdminLayout';
-import AdminProducts from '@/pages/admin/ProductsPage';
-import AdminCoupons from '@/pages/admin/CouponsPage';
-import AdminReports from '@/pages/admin/ReportsPage';
-import AdminSettings from '@/pages/admin/SettingsPage';
-import LoginPage from '@/pages/admin/LoginPage';
-import ProductDetailsPage from './pages/customer/ProductDetailsPage';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { CartProvider } from './contexts/CartContext';
-import AdminDashboard from './pages/admin/DashboardPage';
-import CarpenterLayout from './layouts/CarpenterLayout';
-import CarpenterUnderwayOrders from './pages/carpenter/UnderwayOrders';
-import CarpenterIncomingOrders from './pages/carpenter/IncomingOrders';
-import CarpenterCompletedOrders from './pages/carpenter/CompletedOrders';
-import CarpenterCancelledOrders from './pages/carpenter/CancelledOrders';
-import NotFoundPage from './pages/customer/NotFoundPage';
+
+// Lazy load pages
+const HomePage = lazy(() => import('@/pages/customer/HomePage'));
+const ShopPage = lazy(() => import('@/pages/customer/ShopPage'));
+const CartPage = lazy(() => import('@/pages/customer/CartPage'));
+const CheckoutPage = lazy(() => import('@/pages/customer/CheckoutPage'));
+const AdminLayout = lazy(() => import('@/layouts/AdminLayout'));
+const AdminProducts = lazy(() => import('@/pages/admin/ProductsPage'));
+const AdminCoupons = lazy(() => import('@/pages/admin/CouponsPage'));
+const AdminReports = lazy(() => import('@/pages/admin/ReportsPage'));
+const AdminSettings = lazy(() => import('@/pages/admin/SettingsPage'));
+const LoginPage = lazy(() => import('@/pages/admin/LoginPage'));
+const ProductDetailsPage = lazy(() => import('./pages/customer/ProductDetailsPage'));
+const AdminDashboard = lazy(() => import('./pages/admin/DashboardPage'));
+const CarpenterLayout = lazy(() => import('./layouts/CarpenterLayout'));
+const CarpenterUnderwayOrders = lazy(() => import('./pages/carpenter/UnderwayOrders'));
+const CarpenterIncomingOrders = lazy(() => import('./pages/carpenter/IncomingOrders'));
+const CarpenterCompletedOrders = lazy(() => import('./pages/carpenter/CompletedOrders'));
+const CarpenterCancelledOrders = lazy(() => import('./pages/carpenter/CancelledOrders'));
+const NotFoundPage = lazy(() => import('./pages/customer/NotFoundPage'));
 
 const queryClient = new QueryClient();
 
@@ -34,44 +38,54 @@ const App = () => {
         <Router>
           <AuthProvider>
             <CartProvider>
-              <Routes>
-                {/* Public Routes */}
-                <Route element={<MainLayout />}>
-                  <Route path='/' element={<HomePage />} />
-                  <Route path='/shop' element={<ShopPage />} />
-                  <Route path='/product/:id' element={<ProductDetailsPage />} />
-                  <Route path='/cart' element={<CartPage />} />
-                  <Route path='/checkout' element={<CheckoutPage />} />
-                </Route>
-
-                {/* Admin Routes */}
-                <Route path='/admin/login' element={<LoginPage />} />
-                <Route
-                  path='/admin'
-                  element={
-                    <ProtectedRoute>
-                      <AdminLayout />
-                    </ProtectedRoute>
+              <ErrorBoundary>
+                <Suspense
+                  fallback={
+                    <div className='flex items-center justify-center min-h-screen'>
+                      <div className='animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary'></div>
+                    </div>
                   }
                 >
-                  <Route index element={<AdminDashboard />} />
-                  <Route path='products' element={<AdminProducts />} />
-                  <Route path='coupons' element={<AdminCoupons />} />
-                  <Route path='reports' element={<AdminReports />} />
-                  <Route path='settings' element={<AdminSettings />} />
-                </Route>
+                  <Routes>
+                    {/* Public Routes */}
+                    <Route element={<MainLayout />}>
+                      <Route path='/' element={<HomePage />} />
+                      <Route path='/shop' element={<ShopPage />} />
+                      <Route path='/product/:id' element={<ProductDetailsPage />} />
+                      <Route path='/cart' element={<CartPage />} />
+                      <Route path='/checkout' element={<CheckoutPage />} />
+                    </Route>
 
-                {/* Carpenter Routes */}
-                <Route path='/carpenter' element={<CarpenterLayout />}>
-                  <Route index element={<CarpenterUnderwayOrders />} />
-                  <Route path='incoming' element={<CarpenterIncomingOrders />} />
-                  <Route path='completed' element={<CarpenterCompletedOrders />} />
-                  <Route path='cancelled' element={<CarpenterCancelledOrders />} />
-                </Route>
+                    {/* Admin Routes */}
+                    <Route path='/admin/login' element={<LoginPage />} />
+                    <Route
+                      path='/admin'
+                      element={
+                        <ProtectedRoute>
+                          <AdminLayout />
+                        </ProtectedRoute>
+                      }
+                    >
+                      <Route index element={<AdminDashboard />} />
+                      <Route path='products' element={<AdminProducts />} />
+                      <Route path='coupons' element={<AdminCoupons />} />
+                      <Route path='reports' element={<AdminReports />} />
+                      <Route path='settings' element={<AdminSettings />} />
+                    </Route>
 
-                {/* 404 Route */}
-                <Route path='*' element={<NotFoundPage />} />
-              </Routes>
+                    {/* Carpenter Routes */}
+                    <Route path='/carpenter' element={<CarpenterLayout />}>
+                      <Route index element={<CarpenterUnderwayOrders />} />
+                      <Route path='incoming' element={<CarpenterIncomingOrders />} />
+                      <Route path='completed' element={<CarpenterCompletedOrders />} />
+                      <Route path='cancelled' element={<CarpenterCancelledOrders />} />
+                    </Route>
+
+                    {/* 404 Route */}
+                    <Route path='*' element={<NotFoundPage />} />
+                  </Routes>
+                </Suspense>
+              </ErrorBoundary>
             </CartProvider>
           </AuthProvider>
         </Router>

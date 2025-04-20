@@ -50,12 +50,7 @@ const ProductDetailsPage = () => {
         <div>
           <h1 className='text-3xl font-bold'>{product.name.he}</h1>
           <div className='space-y-2'>
-            <p className='text-2xl font-medium'>
-              {formatPrice(priceWithTax)}
-              <span className='text-sm text-gray-500 ml-2'>
-                {t('products.priceIncludesTax' as TranslationKeys)} ({taxRate}%)
-              </span>
-            </p>
+            <p className='text-2xl font-medium'>{formatPrice(priceWithTax)}</p>
           </div>
           {product.description && <p className='text-muted-foreground'>{product.description.he}</p>}
           {product.dimensions && (

@@ -13,22 +13,22 @@ interface OrderCardProps {
 }
 
 const statusLabels: Record<OrderStatus, string> = {
-  incoming: 'הזמנה חדשה',
-  underway: 'בתהליך',
-  completed: 'הושלם',
-  cancelled: 'בוטל',
+  INCOMING: 'הזמנה חדשה',
+  UNDERWAY: 'בעבודה',
+  COMPLETED: 'הושלם',
+  CANCELLED: 'בוטל',
 };
 
 const statusColors: Record<OrderStatus, string> = {
-  incoming: 'bg-blue-500',
-  underway: 'bg-yellow-500',
-  completed: 'bg-green-500',
-  cancelled: 'bg-red-500',
+  INCOMING: 'bg-blue-500',
+  UNDERWAY: 'bg-yellow-500',
+  COMPLETED: 'bg-green-500',
+  CANCELLED: 'bg-red-500',
 };
 
 const OrderCard = ({ order, onStatusChange, availableStatuses }: OrderCardProps) => {
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), 'dd/MM/yyyy HH:mm', { locale: he });
+  const formatDate = (date: Date) => {
+    return format(date, 'dd/MM/yyyy HH:mm', { locale: he });
   };
 
   return (

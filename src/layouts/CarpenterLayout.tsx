@@ -1,23 +1,29 @@
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useLanguage } from '@/hooks/useLanguage';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 const CarpenterLayout = () => {
-  const { direction } = useLanguage();
+  const { direction, t } = useLanguage();
   const location = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Navigate to='/carpenter/login' replace />;
+  }
 
   const navItems = [
-    { path: '/carpenter', label: 'הזמנות בתהליך' },
-    { path: '/carpenter/incoming', label: 'הזמנות חדשות' },
-    { path: '/carpenter/completed', label: 'הזמנות שהושלמו' },
-    { path: '/carpenter/cancelled', label: 'הזמנות שבוטלו' },
+    { path: '/carpenter', label: t('carpenterOrders.underway') },
+    { path: '/carpenter/incoming', label: t('carpenterOrders.incoming') },
+    { path: '/carpenter/completed', label: t('carpenterOrders.completed') },
+    { path: '/carpenter/cancelled', label: t('carpenterOrders.cancelled') },
   ];
 
   return (
     <div className='min-h-screen bg-gray-50'>
       <div className='container mx-auto px-4 py-8'>
-        <h1 className='text-3xl font-bold mb-8 text-right'>ניהול הזמנות</h1>
+        <h1 className='text-3xl font-bold mb-8 text-right'>{t('carpenterOrders.title')}</h1>
 
         <nav className='mb-8'>
           <div className='flex flex-wrap gap-2'>

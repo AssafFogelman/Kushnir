@@ -7,6 +7,7 @@ import { mockProducts, Product } from '@/mocks/mock-data';
 import { useState, useEffect } from 'react';
 import { Language } from '@/i18n/locales/types';
 import { TranslationKeys } from '@/lib/language-types';
+import WoodPattern from '@/components/WoodPattern';
 
 const MAX_LINES_IN_SECTION = 2;
 const INITIAL_LINES_IN_SECTION = 1;
@@ -154,9 +155,12 @@ const HomePage = () => {
   return (
     <div className='space-y-20 mb-[30px]'>
       {/* Hero Section */}
-      <section className='relative h-[50vh] flex items-center justify-center wood-pattern'>
+      <section className='relative h-[50vh] flex items-center justify-center overflow-hidden'>
+        <div className='absolute inset-0'>
+          <WoodPattern />
+        </div>
         <div className='absolute inset-0 bg-black/50' />
-        <div className='relative container mx-auto px-4 text-center text-white'>
+        <div className='relative container mx-auto px-4 text-center text-white z-10'>
           <h1 className='text-4xl md:text-6xl font-bold mb-4'>{t('home.heroTitle')}</h1>
           <p className='text-xl md:text-2xl mb-8'>{t('home.heroSubtitle')}</p>
           <Button size='lg' asChild>

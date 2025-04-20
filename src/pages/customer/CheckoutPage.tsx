@@ -12,25 +12,27 @@ import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/useCart';
 import { useLanguage } from '@/hooks/useLanguage';
 import { formatPrice, cn } from '@/lib/utils';
-import { checkoutSchema } from '@/lib/validations/checkout';
+import { createCheckoutSchema } from '@/lib/validations/checkout';
 import { TranslationKeys } from '@/lib/language-types';
-
-type CheckoutFormData = z.infer<typeof checkoutSchema>;
 
 const CheckoutPage = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const { items, clearCart } = useCart();
   const [shippingMethod, setShippingMethod] = useState<'pickup' | 'delivery'>('pickup');
   const [couponCode, setCouponCode] = useState('');
   const [couponDiscount] = useState(0);
+
+  // Create the schema with the current language
+  const schema = createCheckoutSchema(language);
+  type CheckoutFormData = z.infer<typeof schema>;
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<CheckoutFormData>({
-    resolver: zodResolver(checkoutSchema),
+    resolver: zodResolver(schema),
     defaultValues: {
       shippingMethod: 'pickup',
       privacyPolicy: false,

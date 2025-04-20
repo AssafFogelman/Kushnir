@@ -2,9 +2,11 @@ import { useState } from 'react';
 import { OrderStatus } from '@/types/order';
 import BaseOrderScreen from './BaseOrderScreen';
 import { mockOrders } from '@/mocks/orders';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const CarpenterCancelledOrders = () => {
-  const [orders, setOrders] = useState(mockOrders.filter(order => order.status === 'cancelled'));
+  const { t } = useLanguage();
+  const [orders, setOrders] = useState(mockOrders.filter(order => order.status === 'CANCELLED'));
 
   const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
     setOrders(currentOrders =>
@@ -13,7 +15,7 @@ const CarpenterCancelledOrders = () => {
           ? {
               ...order,
               status: newStatus,
-              statusChangedAt: new Date().toISOString(),
+              statusChangedAt: new Date(),
             }
           : order
       )
@@ -23,8 +25,8 @@ const CarpenterCancelledOrders = () => {
   return (
     <BaseOrderScreen
       orders={orders}
-      title='הזמנות שבוטלו'
-      availableStatuses={['underway']}
+      title={t('carpenterOrders.cancelled')}
+      availableStatuses={['UNDERWAY']}
       onStatusChange={handleStatusChange}
     />
   );

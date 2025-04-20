@@ -6,6 +6,8 @@ export const mockOrders: Order[] = [
     customerName: 'דוד כהן',
     customerPhone: '050-1234567',
     customerEmail: 'david@example.com',
+    productName: 'ארון ספרים אורן',
+    estimatedCompletionDate: new Date('2024-03-26T15:30:00Z'),
     items: [
       {
         id: '1',
@@ -16,9 +18,9 @@ export const mockOrders: Order[] = [
       },
     ],
     totalPrice: 1200,
-    status: 'underway',
-    statusChangedAt: '2024-03-20T10:00:00Z',
-    createdAt: '2024-03-19T15:30:00Z',
+    status: 'UNDERWAY',
+    statusChangedAt: new Date('2024-03-20T10:00:00Z'),
+    createdAt: new Date('2024-03-19T15:30:00Z'),
     notes: 'יש להכין עד סוף החודש',
     shippingAddress: {
       street: 'הרצל',
@@ -33,6 +35,8 @@ export const mockOrders: Order[] = [
     customerName: 'שרה לוי',
     customerPhone: '052-7654321',
     customerEmail: 'sarah@example.com',
+    productName: 'שולחן אוכל אלון',
+    estimatedCompletionDate: new Date('2024-03-27T11:00:00Z'),
     items: [
       {
         id: '2',
@@ -43,9 +47,9 @@ export const mockOrders: Order[] = [
       },
     ],
     totalPrice: 2500,
-    status: 'incoming',
-    statusChangedAt: '2024-03-20T11:00:00Z',
-    createdAt: '2024-03-20T11:00:00Z',
+    status: 'INCOMING',
+    statusChangedAt: new Date('2024-03-20T11:00:00Z'),
+    createdAt: new Date('2024-03-20T11:00:00Z'),
     notes: 'מעוניינת בשולחן בצבע כהה',
   },
   {
@@ -53,6 +57,8 @@ export const mockOrders: Order[] = [
     customerName: 'משה אברהם',
     customerPhone: '054-9876543',
     customerEmail: 'moshe@example.com',
+    productName: 'ארון ספרים אורן',
+    estimatedCompletionDate: new Date('2024-03-25T09:00:00Z'),
     items: [
       {
         id: '1',
@@ -63,9 +69,9 @@ export const mockOrders: Order[] = [
       },
     ],
     totalPrice: 2400,
-    status: 'completed',
-    statusChangedAt: '2024-03-19T16:00:00Z',
-    createdAt: '2024-03-18T09:00:00Z',
+    status: 'COMPLETED',
+    statusChangedAt: new Date('2024-03-19T16:00:00Z'),
+    createdAt: new Date('2024-03-18T09:00:00Z'),
     shippingAddress: {
       street: 'בן יהודה',
       number: '45',
@@ -78,6 +84,8 @@ export const mockOrders: Order[] = [
     customerName: 'רחל גולן',
     customerPhone: '053-1234567',
     customerEmail: 'rachel@example.com',
+    productName: 'שולחן אוכל אלון',
+    estimatedCompletionDate: new Date('2024-03-25T10:00:00Z'),
     items: [
       {
         id: '2',
@@ -88,9 +96,9 @@ export const mockOrders: Order[] = [
       },
     ],
     totalPrice: 2500,
-    status: 'cancelled',
-    statusChangedAt: '2024-03-19T14:00:00Z',
-    createdAt: '2024-03-18T10:00:00Z',
+    status: 'CANCELLED',
+    statusChangedAt: new Date('2024-03-19T14:00:00Z'),
+    createdAt: new Date('2024-03-18T10:00:00Z'),
     notes: 'הלקוחה ביטלה את ההזמנה',
   },
 ];

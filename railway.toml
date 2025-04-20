@@ -1,0 +1,6 @@
+[build]
+builder = "static"
+publish = "dist"
+
+[deploy]
+startCommand = "npm run preview" 
