@@ -10,7 +10,7 @@ const CarpenterLayout = () => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {
-    return <Navigate to='/carpenter/login' replace />;
+    return <Navigate to='/carpenter/login' state={{ from: location.pathname }} replace />;
   }
 
   const navItems = [

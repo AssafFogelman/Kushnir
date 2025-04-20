@@ -27,6 +27,7 @@ const CarpenterUnderwayOrders = lazy(() => import('./pages/carpenter/UnderwayOrd
 const CarpenterIncomingOrders = lazy(() => import('./pages/carpenter/IncomingOrders'));
 const CarpenterCompletedOrders = lazy(() => import('./pages/carpenter/CompletedOrders'));
 const CarpenterCancelledOrders = lazy(() => import('./pages/carpenter/CancelledOrders'));
+const CarpenterLoginPage = lazy(() => import('./pages/carpenter/LoginPage'));
 const NotFoundPage = lazy(() => import('./pages/customer/NotFoundPage'));
 
 const queryClient = new QueryClient();
@@ -74,7 +75,15 @@ const App = () => {
                     </Route>
 
                     {/* Carpenter Routes */}
-                    <Route path='/carpenter' element={<CarpenterLayout />}>
+                    <Route path='/carpenter/login' element={<CarpenterLoginPage />} />
+                    <Route
+                      path='/carpenter'
+                      element={
+                        <ProtectedRoute>
+                          <CarpenterLayout />
+                        </ProtectedRoute>
+                      }
+                    >
                       <Route index element={<CarpenterUnderwayOrders />} />
                       <Route path='incoming' element={<CarpenterIncomingOrders />} />
                       <Route path='completed' element={<CarpenterCompletedOrders />} />

@@ -25,6 +25,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const loginCarpenter = async (password: string) => {
+    if (password === 'carpenter123') {
+      setIsAuthenticated(true);
+      setSessionCookie();
+      navigate('/carpenter');
+    } else {
+      throw new Error('Invalid password');
+    }
+  };
+
   const logout = () => {
     setIsAuthenticated(false);
     deleteSessionCookie();
@@ -32,7 +42,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, loginCarpenter }}>
       {children}
     </AuthContext.Provider>
   );
